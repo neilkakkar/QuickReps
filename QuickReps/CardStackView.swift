@@ -49,6 +49,10 @@ class CardStackView: UIStackView {
         }
     }
     
+    func resetViewWithNewData() {
+        setupView()
+    }
+    
     //MARK: Private Methods
     private func setupView() {
         // both labels = part of a Card data model. This will just render the card, and add pan / tap gesture control.
@@ -59,6 +63,15 @@ class CardStackView: UIStackView {
         
         self.top.text = "Upper Card"
         self.bottom.text = "Lower Card"
+        
+        self.top.layer.masksToBounds = true
+        self.top.layer.cornerRadius = 8.0
+        
+        self.top.layer.borderColor = UIColor.gray.cgColor
+        self.top.layer.borderWidth = 1.0
+        
+        self.bottom.layer.masksToBounds = true
+        self.bottom.layer.cornerRadius = 8.0
         
         self.top.translatesAutoresizingMaskIntoConstraints = false
         self.bottom.translatesAutoresizingMaskIntoConstraints = false
