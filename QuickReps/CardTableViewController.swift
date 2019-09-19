@@ -10,8 +10,13 @@ import UIKit
 
 class CardTableViewController: UITableViewController {
 
+    //MARK: Properties
+    var cards = [Card]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loadSampleCards()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -23,24 +28,24 @@ class CardTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return cards.count
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cellIdentifier = "CardTableViewCell"
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
 
+        let card = self.cards[indexPath.row]
         // Configure the cell...
+        cell.textLabel!.text = card.top
+//        cell.detailTextLabel!.text = card.bottom
 
         return cell
     }
-    */
 
     /*
     // Override to support conditional editing of the table view.
@@ -86,5 +91,23 @@ class CardTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    //MARK: Actions
+    @IBAction func unwindToCardList(sender: UIStoryboardSegue) {
+        if let sourceViewController = sender.source as? EditCardViewController, let card = sourceViewController.card {
+            let newIndexPath = IndexPath(row: cards.count, section: 0)
+            cards.append(card)
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+        }
+    }
+    
+    //MARK: Private
+    private func loadSampleCards() {
+        let card1 = Card(top: "top", bottom: "bottom")
+        let card2 = Card(top: "up", bottom: "down")
+        let card3 = Card(top: "Something useful? or just super super super looong! What now, iOS!?", bottom: "No")
+        
+        self.cards += [card1, card2, card3]
+    }
 
 }
