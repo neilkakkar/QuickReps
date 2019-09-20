@@ -23,7 +23,12 @@ class EditCardViewController: UIViewController, UITextFieldDelegate {
         editCardView.top.delegate = self
         editCardView.bottom.delegate = self
 
-        // Do any additional setup after loading the view.
+        if let card = card {
+            editCardView.top.text = card.top
+            editCardView.bottom.text = card.bottom
+        }
+
+        updateSaveButtonState()
     }
     
     //MARK: UITextFieldDelegate
@@ -32,6 +37,29 @@ class EditCardViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        updateSaveButtonState()
+    }
+    
+    func updateSaveButtonState() {
+        let topText = editCardView.top.text ?? ""
+        let bottomText = editCardView.bottom.text ?? ""
+        
+        saveButton.isEnabled = !(topText.isEmpty || bottomText.isEmpty)
+    }
+    
+    //MARK: Actions
+
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
+        let isPresentinginAddMode = presentingViewController is UINavigationController
+        if isPresentinginAddMode {
+            dismiss(animated: true, completion: nil)
+        } else if let owningNavigationController = self.navigationController {
+            owningNavigationController.popViewController(animated: true)
+        } else {
+            fatalError("EditCardViewController not inside a navigation controller")
+        }
+    }
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation

@@ -48,7 +48,7 @@
                     <navigationItem key="navigationItem" title="QuickReps" id="Aqa-sW-liq">
                         <barButtonItem key="rightBarButtonItem" systemItem="organize" id="Ufj-Vy-gIk">
                             <connections>
-                                <segue destination="yQh-7k-V9l" kind="show" id="Dmj-Am-01M"/>
+                                <segue destination="yQh-7k-V9l" kind="show" id="hL5-v0-37d"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -90,6 +90,9 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="hxT-Pq-PfQ" kind="show" identifier="showDetail" id="vFr-QP-xI4"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -109,7 +112,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0o5-Fc-sJZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2147" y="136"/>
+            <point key="canvasLocation" x="2168" y="154"/>
         </scene>
         <!--New Card-->
         <scene sceneID="qqN-Vl-air">
@@ -120,7 +123,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="IcW-oz-FIl" userLabel="CardStackView" customClass="EditCardStackView" customModule="QuickReps" customModuleProvider="target">
-                                <rect key="frame" x="30" y="116" width="260" height="400"/>
+                                <rect key="frame" x="30" y="94" width="260" height="400"/>
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="400" id="Ypb-bn-ASE"/>
@@ -136,7 +139,11 @@
                         <viewLayoutGuide key="safeArea" id="CtI-zi-nLz"/>
                     </view>
                     <navigationItem key="navigationItem" title="New Card" id="Qqv-Mo-2sU">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="r0F-nL-z8E"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="r0F-nL-z8E">
+                            <connections>
+                                <action selector="cancel:" destination="hxT-Pq-PfQ" id="pvK-9W-gXi"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="i56-KQ-fId">
                             <connections>
                                 <segue destination="I0b-Qk-cOT" kind="unwind" unwindAction="unwindToCardListWithSender:" id="2vg-Zx-cke"/>
@@ -152,7 +159,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bQ8-uh-T90" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="I0b-Qk-cOT" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4228.125" y="135.21126760563379"/>
+            <point key="canvasLocation" x="4013" y="136"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="2Br-cV-za4">
@@ -188,7 +195,10 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yEQ-Pg-Zrt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3230.625" y="135.21126760563379"/>
+            <point key="canvasLocation" x="3233" y="529"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="vFr-QP-xI4"/>
+    </inferredMetricsTieBreakers>
 </document>

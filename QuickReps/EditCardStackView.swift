@@ -80,8 +80,8 @@ class EditCardStackView: UIStackView {
 //        self.bottomtapGestureRecognizer.addTarget(
 //            self, action: #selector(EditCardStackView.bottomCardTapped(sender:)))
 
-        self.top.text = "Upper Card"
-        self.bottom.text = "Lower Card"
+        self.top.placeholder = "Question / Reminder"
+        self.bottom.placeholder = "Answer"
         
         self.top.layer.masksToBounds = true
         self.top.layer.cornerRadius = 8.0
