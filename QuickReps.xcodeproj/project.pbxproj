@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AD44895C233648E2009FBB98 /* CardDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD44895B233648E2009FBB98 /* CardDataController.swift */; };
 		ADBBD144233407C4007B9366 /* EditCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBBD143233407C4007B9366 /* EditCardViewController.swift */; };
 		ADBBD14623340855007B9366 /* EditCardStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBBD14523340855007B9366 /* EditCardStackView.swift */; };
 		ADE6CF14231C09F400BC793E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE6CF13231C09F400BC793E /* AppDelegate.swift */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AD44895B233648E2009FBB98 /* CardDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDataController.swift; sourceTree = "<group>"; };
 		ADBBD143233407C4007B9366 /* EditCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardViewController.swift; sourceTree = "<group>"; };
 		ADBBD14523340855007B9366 /* EditCardStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardStackView.swift; sourceTree = "<group>"; };
 		ADE6CF10231C09F400BC793E /* QuickReps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickReps.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,6 +118,7 @@
 				ADBBD14523340855007B9366 /* EditCardStackView.swift */,
 				ADBBD143233407C4007B9366 /* EditCardViewController.swift */,
 				ADE6CF482332C5F100BC793E /* CardTableViewController.swift */,
+				AD44895B233648E2009FBB98 /* CardDataController.swift */,
 				ADE6CF46231C20E200BC793E /* Card.swift */,
 				ADE6CF1D231C09F600BC793E /* Assets.xcassets */,
 				ADE6CF1F231C09F600BC793E /* LaunchScreen.storyboard */,
@@ -276,6 +279,7 @@
 			files = (
 				ADE6CF1C231C09F400BC793E /* QuickReps.xcdatamodeld in Sources */,
 				ADE6CF45231C0EF600BC793E /* CardStackView.swift in Sources */,
+				AD44895C233648E2009FBB98 /* CardDataController.swift in Sources */,
 				ADE6CF47231C20E200BC793E /* Card.swift in Sources */,
 				ADBBD14623340855007B9366 /* EditCardStackView.swift in Sources */,
 				ADE6CF16231C09F400BC793E /* ViewController.swift in Sources */,

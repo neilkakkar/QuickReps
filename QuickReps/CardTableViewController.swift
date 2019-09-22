@@ -17,7 +17,11 @@ class CardTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadSampleCards()
+        if let savedCards = loadCards() {
+            cards += savedCards
+        } else {
+            loadSampleCards()
+        }
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -58,7 +62,9 @@ class CardTableViewController: UITableViewController {
         if editingStyle == .delete {
             // Delete the row from the data source
             cards.remove(at: indexPath.row)
+            saveCards()
             tableView.deleteRows(at: [indexPath], with: .fade)
+            
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
@@ -123,16 +129,38 @@ class CardTableViewController: UITableViewController {
                 cards.append(card)
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
             }
+            
+            saveCards()
         }
     }
     
     //MARK: Private
     private func loadSampleCards() {
+        if !cards.isEmpty {
+            return
+        }
         let card1 = Card(top: "top", bottom: "bottom")
         let card2 = Card(top: "up", bottom: "down")
         let card3 = Card(top: "Something useful? or just super super super looong! What now, iOS!?", bottom: "No")
         
         self.cards += [card1, card2, card3]
+    }
+    
+    private func saveCards() {
+        let codedData = try! NSKeyedArchiver.archivedData(withRootObject: cards, requiringSecureCoding: false)
+        
+        do {
+            try codedData.write(to: Card.ArchiveURL)
+        } catch {
+            os_log("Couldn't write to save file.", type: .debug)
+        }
+    }
+    
+    private func loadCards() -> [Card]? {
+        guard let codedData = try? Data(contentsOf: Card.ArchiveURL) else { return nil }
+        
+        let cards = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(codedData) as? [Card]
+        return cards
     }
 
 }

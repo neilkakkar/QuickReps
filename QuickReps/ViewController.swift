@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     //MARK: Properties
     @IBOutlet weak var cardStackView: CardStackView!
     var initialCardCenter: CGPoint?
+    var cardDataController = CardDataController.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,7 +81,9 @@ class ViewController: UIViewController {
                 return
         }
         card.center = cardCenter
-        card.resetViewWithNewData()
+        
+        let newCard = cardDataController.getNextCardToRemember()
+        card.resetViewWithNewData(cardData: newCard)
         UIView.animate(withDuration: 0.2) {
             card.alpha = 1
         }

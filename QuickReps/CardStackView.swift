@@ -14,6 +14,7 @@ class CardStackView: UIStackView {
     var tapGestureRecognizer: UITapGestureRecognizer
     var top: UILabel
     var bottom: UILabel
+    var cardData: Card
 
     //MARK: Initialization
     override init(frame: CGRect) {
@@ -21,6 +22,7 @@ class CardStackView: UIStackView {
         self.tapGestureRecognizer = UITapGestureRecognizer()
         self.top = UILabel()
         self.bottom = UILabel()
+        self.cardData = Card(top: "upper", bottom: "lower")
         
         super.init(frame: frame)
         
@@ -32,6 +34,7 @@ class CardStackView: UIStackView {
         self.tapGestureRecognizer = UITapGestureRecognizer()
         self.top = UILabel()
         self.bottom = UILabel()
+        self.cardData = Card(top: "upper", bottom: "lower")
 
         super.init(coder: coder)
         
@@ -49,20 +52,18 @@ class CardStackView: UIStackView {
         }
     }
     
-    func resetViewWithNewData() {
-        setupView()
+    func resetViewWithNewData(cardData: Card) {
+        self.cardData = cardData
+        setupCardView()
     }
     
     //MARK: Private Methods
-    private func setupView() {
+    private func setupBaseView() {
         // both labels = part of a Card data model. This will just render the card, and add pan / tap gesture control.
         self.isUserInteractionEnabled = true
         self.tapGestureRecognizer.addTarget(self, action: #selector(CardStackView.cardTapped(sender:)))
         
         self.addGestureRecognizer(self.tapGestureRecognizer)
-        
-        self.top.text = "Upper Card"
-        self.bottom.text = "Lower Card"
         
         self.top.layer.masksToBounds = true
         self.top.layer.cornerRadius = 8.0
@@ -83,10 +84,23 @@ class CardStackView: UIStackView {
         self.bottom.numberOfLines = 0
         
         self.bottom.alpha = 0
-
+        
         addArrangedSubview(self.top)
         addArrangedSubview(self.bottom)
         
+    }
+    
+    private func setupCardView() {
+        
+        self.top.text = self.cardData.top
+        self.bottom.text = self.cardData.bottom
+        
+        self.bottom.alpha = 0
+    }
+    
+    private func setupView() {
+        setupBaseView()
+        setupCardView()
     }
 
 }
