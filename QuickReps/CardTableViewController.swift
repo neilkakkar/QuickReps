@@ -12,16 +12,13 @@ import os.log
 class CardTableViewController: UITableViewController {
 
     //MARK: Properties
+    var cardDataController = CardDataController.shared
     var cards = [Card]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let savedCards = loadCards() {
-            cards += savedCards
-        } else {
-            loadSampleCards()
-        }
+        cards = cardDataController.getAllCards()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -135,17 +132,6 @@ class CardTableViewController: UITableViewController {
     }
     
     //MARK: Private
-    private func loadSampleCards() {
-        if !cards.isEmpty {
-            return
-        }
-        let card1 = Card(top: "top", bottom: "bottom")
-        let card2 = Card(top: "up", bottom: "down")
-        let card3 = Card(top: "Something useful? or just super super super looong! What now, iOS!?", bottom: "No")
-        
-        self.cards += [card1, card2, card3]
-    }
-    
     private func saveCards() {
         let codedData = try! NSKeyedArchiver.archivedData(withRootObject: cards, requiringSecureCoding: false)
         

@@ -14,10 +14,13 @@ class ViewController: UIViewController {
     @IBOutlet weak var cardStackView: CardStackView!
     var initialCardCenter: CGPoint?
     var cardDataController = CardDataController.shared
+    var currentCard: Card?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        currentCard = cardDataController.getNextCardToRemember()
     }
     
     
@@ -46,6 +49,8 @@ class ViewController: UIViewController {
                     card.alpha = 0
             },
                 completion: {(finished: Bool) in
+                    self.currentCard!.reps += 1
+                    self.cardDataController.setNextRevision(card: self.currentCard!, ease: 4)
                     self.getNewCardData(card: card)
             })
         } else if card.center.x > self.view.frame.width - 75 {
@@ -56,6 +61,7 @@ class ViewController: UIViewController {
                     card.alpha = 0
             },
                 completion: {(finished: Bool) in
+                    self.cardDataController.setNextRevision(card: self.currentCard!, ease: 1)
                     self.getNewCardData(card: card)
             })
         } else {
@@ -82,8 +88,13 @@ class ViewController: UIViewController {
         }
         card.center = cardCenter
         
-        let newCard = cardDataController.getNextCardToRemember()
-        card.resetViewWithNewData(cardData: newCard)
+        if let newCard = cardDataController.getNextCardToRemember() {
+            card.resetViewWithNewData(cardData: newCard)
+            self.currentCard = newCard
+        } else {
+            card.resetViewWithNewData(cardData: CardDataController.noNewDataCard)
+            self.currentCard = CardDataController.noNewDataCard
+        }
         UIView.animate(withDuration: 0.2) {
             card.alpha = 1
         }

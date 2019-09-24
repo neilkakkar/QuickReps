@@ -34,7 +34,7 @@ class CardStackView: UIStackView {
         self.tapGestureRecognizer = UITapGestureRecognizer()
         self.top = UILabel()
         self.bottom = UILabel()
-        self.cardData = Card(top: "upper", bottom: "lower")
+        self.cardData = Card(top: "Tap card to reveal answer", bottom: "Swipe left if you don't remember, right if you do.")
 
         super.init(coder: coder)
         

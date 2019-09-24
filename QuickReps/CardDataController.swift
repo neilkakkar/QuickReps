@@ -13,6 +13,7 @@ class CardDataController {
     
     var cards = [Card]()
     static let shared = CardDataController()
+    static let noNewDataCard = Card(top: "No more cards today", bottom: "Great job!")
 
     private init() {
         if let savedCards = loadCards() {
@@ -22,21 +23,55 @@ class CardDataController {
         }
     }
 
-    func getNextCardToRemember() -> Card {
+    func getNextCardToRemember() -> Card? {
+        // super inefficient compared to a one pass queue?
         let number = Int.random(in: 0 ..< cards.count)
+        for card in cards {
+            if card.dueDate < Date() {
+                return card
+            }
+        }
+        return nil
         
-        return cards[number]
+//        return cards[number]
+    }
+    
+    func setNextRevision(card: Card, ease: Int) {
+        if ease < 3 {
+            card.interval = 1*24*60 // 1 day
+        } else if card.reps == 1 {
+            card.interval = 6*24*60 // 6 days
+        } else {
+            let newInterval = ceil(card.interval * card.easinessFactor)
+            card.interval = newInterval
+            print(card.interval, newInterval)
+            let addend = 0.1 // -((5 - ease)*(0.08 + (5 - ease)*0.02))
+            let newEasinessFactor = card.easinessFactor + addend
+            card.easinessFactor = newEasinessFactor
+            card.easinessFactor = max(1.3, card.easinessFactor)
+        }
+        card.dueDate = Date(timeIntervalSinceNow: card.interval)
+        dump(card)
     }
     
     func addCard(card: Card) {
-
+        cards.append(card)
     }
     
-    func deleteCard(card: Card) {
+    func deleteCard(at: Int) {
+        cards.remove(at: at)
         
     }
     
+    func getAllCards() -> [Card] {
+        return cards
+    }
+    
     //MARK: Private
+    private func getNewInterval(card: Card) {
+        
+    }
+
     private func loadSampleCards() {
         if !cards.isEmpty {
             return
@@ -63,6 +98,7 @@ class CardDataController {
         guard let codedData = try? Data(contentsOf: Card.ArchiveURL) else { return nil }
         
         let cards = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(codedData) as? [Card]
+        dump(cards)
         return cards
     }
 }
