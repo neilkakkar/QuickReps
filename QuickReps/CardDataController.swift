@@ -12,6 +12,7 @@ import os.log
 class CardDataController {
     
     var cards = [Card]()
+    var editCount: Int = 0
     static let shared = CardDataController()
     static let noNewDataCard = Card(top: "No more cards today", bottom: "Great job!")
 
@@ -45,7 +46,7 @@ class CardDataController {
             let newInterval = ceil(card.interval * card.easinessFactor)
             card.interval = newInterval
             print(card.interval, newInterval)
-            let addend = 0.1 // -((5 - ease)*(0.08 + (5 - ease)*0.02))
+            let addend = createNewAddend(ease)
             let newEasinessFactor = card.easinessFactor + addend
             card.easinessFactor = newEasinessFactor
             card.easinessFactor = max(1.3, card.easinessFactor)
@@ -56,18 +57,50 @@ class CardDataController {
     
     func addCard(card: Card) {
         cards.append(card)
+        editCount += 1
     }
     
     func deleteCard(at: Int) {
         cards.remove(at: at)
+        editCount += 1
         
+    }
+    
+    func updateCard(at: Int, card: Card) {
+        cards[at] = card
+        editCount += 1
+    }
+    
+    func setObserverMode() {
+        editCount = 0
+    }
+    
+    func hasUpdates() -> Bool {
+        print(editCount, "edits")
+        return editCount > 0
     }
     
     func getAllCards() -> [Card] {
         return cards
     }
     
+    func saveCards() {
+        let codedData = try! NSKeyedArchiver.archivedData(withRootObject: cards, requiringSecureCoding: false)
+        
+        do {
+            try codedData.write(to: Card.ArchiveURL)
+        } catch {
+            os_log("Couldn't write to save file.", type: .debug)
+        }
+    }
+    
     //MARK: Private
+    private func createNewAddend(_ ease: Int) -> Double {
+        let v1 = Double(5 - ease)
+        let v2 = 0.08 + v1*0.02
+        return 0.1 - v1*v2
+    }
+    
     private func getNewInterval(card: Card) {
         
     }
@@ -83,22 +116,11 @@ class CardDataController {
         self.cards += [card1, card2, card3]
     }
     
-    private func saveCards() {
-        let codedData = try! NSKeyedArchiver.archivedData(withRootObject: cards, requiringSecureCoding: false)
-        
-        do {
-            try codedData.write(to: Card.ArchiveURL)
-        } catch {
-            os_log("Couldn't write to save file.", type: .debug)
-        }
-    }
-    
     private func loadCards() -> [Card]? {
         print(Card.ArchiveURL.absoluteString)
         guard let codedData = try? Data(contentsOf: Card.ArchiveURL) else { return nil }
         
         let cards = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(codedData) as? [Card]
-        dump(cards)
         return cards
     }
 }

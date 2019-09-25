@@ -75,6 +75,11 @@ class EditCardViewController: UIViewController, UITextFieldDelegate {
         let top = editCardView.top.text ?? ""
         let bottom = editCardView.bottom.text ?? ""
         
-        card = Card(top: top, bottom: bottom)
+        if card != nil {
+            card!.top = top
+            card!.bottom = bottom
+        } else {
+            card = Card(top: top, bottom: bottom)
+        }
     }
 }

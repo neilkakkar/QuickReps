@@ -23,6 +23,13 @@ class ViewController: UIViewController {
         currentCard = cardDataController.getNextCardToRemember()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        dump(currentCard)
+        if let cardData = currentCard {
+            cardStackView.resetViewWithNewData(cardData: cardData)
+        }
+        super.viewWillAppear(animated)
+    }
     
     @IBAction func panCard(_ sender: UIPanGestureRecognizer) {
         let card = sender.view as! CardStackView
@@ -50,7 +57,7 @@ class ViewController: UIViewController {
             },
                 completion: {(finished: Bool) in
                     self.currentCard!.reps += 1
-                    self.cardDataController.setNextRevision(card: self.currentCard!, ease: 4)
+                    self.cardDataController.setNextRevision(card: self.currentCard!, ease: 1)
                     self.getNewCardData(card: card)
             })
         } else if card.center.x > self.view.frame.width - 75 {
@@ -61,7 +68,8 @@ class ViewController: UIViewController {
                     card.alpha = 0
             },
                 completion: {(finished: Bool) in
-                    self.cardDataController.setNextRevision(card: self.currentCard!, ease: 1)
+                    self.currentCard!.reps += 1
+                    self.cardDataController.setNextRevision(card: self.currentCard!, ease: 4)
                     self.getNewCardData(card: card)
             })
         } else {

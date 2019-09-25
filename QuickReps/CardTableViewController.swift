@@ -20,11 +20,22 @@ class CardTableViewController: UITableViewController {
         
         cards = cardDataController.getAllCards()
 
+        cardDataController.setObserverMode()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if cardDataController.hasUpdates() {
+            cardDataController.saveCards()
+            cardDataController.setObserverMode()
+            // Doesn't work when Home button is pressed :$
+        }
     }
 
     // MARK: - Table view data source
@@ -59,7 +70,8 @@ class CardTableViewController: UITableViewController {
         if editingStyle == .delete {
             // Delete the row from the data source
             cards.remove(at: indexPath.row)
-            saveCards()
+            cardDataController.deleteCard(at: indexPath.row)
+//            cardDataController.saveCards()
             tableView.deleteRows(at: [indexPath], with: .fade)
             
         } else if editingStyle == .insert {
@@ -110,8 +122,6 @@ class CardTableViewController: UITableViewController {
         default:
             fatalError("Unexpected segue identifier")
         }
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
     }
     
     //MARK: Actions
@@ -119,34 +129,16 @@ class CardTableViewController: UITableViewController {
         if let sourceViewController = sender.source as? EditCardViewController, let card = sourceViewController.card {
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
                 cards[selectedIndexPath.row] = card
+                cardDataController.updateCard(at: selectedIndexPath.row, card: card)
                 tableView.reloadRows(at: [selectedIndexPath], with: .none)
                 
             } else {
                 let newIndexPath = IndexPath(row: cards.count, section: 0)
                 cards.append(card)
+                cardDataController.addCard(card: card)
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
             }
-            
-            saveCards()
+//            cardDataController.saveCards()
         }
     }
-    
-    //MARK: Private
-    private func saveCards() {
-        let codedData = try! NSKeyedArchiver.archivedData(withRootObject: cards, requiringSecureCoding: false)
-        
-        do {
-            try codedData.write(to: Card.ArchiveURL)
-        } catch {
-            os_log("Couldn't write to save file.", type: .debug)
-        }
-    }
-    
-    private func loadCards() -> [Card]? {
-        guard let codedData = try? Data(contentsOf: Card.ArchiveURL) else { return nil }
-        
-        let cards = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(codedData) as? [Card]
-        return cards
-    }
-
 }

@@ -57,6 +57,11 @@ class CardStackView: UIStackView {
         setupCardView()
     }
     
+    func resetView() {
+        print("Reset called!")
+        setupCardView()
+    }
+    
     //MARK: Private Methods
     private func setupBaseView() {
         // both labels = part of a Card data model. This will just render the card, and add pan / tap gesture control.
