@@ -13,8 +13,8 @@ class EditCardStackView: UIStackView {
 
 //    var toptapGestureRecognizer: UITapGestureRecognizer
 //    var bottomtapGestureRecognizer: UITapGestureRecognizer
-    var top: UITextField
-    var bottom: UITextField
+    var top: UITextView
+    var bottom: UITextView
     
     //MARK: Initialization
     override init(frame: CGRect) {
@@ -22,8 +22,8 @@ class EditCardStackView: UIStackView {
 //        self.toptapGestureRecognizer = UITapGestureRecognizer()
 //        self.bottomtapGestureRecognizer = UITapGestureRecognizer()
         
-        self.top = UITextField()
-        self.bottom = UITextField()
+        self.top = UITextView()
+        self.bottom = UITextView()
         
         super.init(frame: frame)
         
@@ -35,60 +35,30 @@ class EditCardStackView: UIStackView {
 //        self.toptapGestureRecognizer = UITapGestureRecognizer()
 //        self.bottomtapGestureRecognizer = UITapGestureRecognizer()
         
-        self.top = UITextField()
-        self.bottom = UITextField()
+        self.top = UITextView()
+        self.bottom = UITextView()
         
         super.init(coder: coder)
         
         setupView()
     }
     
-    //MARK: Actions
-    @objc func topCardTapped(sender: UITapGestureRecognizer) {
-        print("Top!")
-        if sender.state == .ended {
-            UIView.animate(withDuration: 0.3)  {
-                self.top.alpha = 1
-                self.bottom.alpha = 0
-            }
-        }
+    func setPlaceholder() {
+        self.top.text = "Question / Reminder"
+        self.top.textColor = UIColor.lightGray
+        self.bottom.text = "Answer"
+        self.bottom.textColor = UIColor.lightGray
     }
-    
-    @objc func bottomCardTapped(sender: UITapGestureRecognizer) {
-        print("Bottom!")
-        if sender.state == .ended {
-            UIView.animate(withDuration: 0.3)  {
-                self.bottom.alpha = 1
-                self.top.alpha = 0
-                
-            }
-        }
-    }
-    
-    func resetViewWithNewData() {
-        setupView()
-    }
-    
+
     //MARK: Private Methods
     private func setupView() {
-
-//        self.top.isUserInteractionEnabled = true
-//        self.bottom.isUserInteractionEnabled = true
-
-//        self.toptapGestureRecognizer.addTarget(
-//            self, action: #selector(EditCardStackView.topCardTapped(sender:)))
-//        self.bottomtapGestureRecognizer.addTarget(
-//            self, action: #selector(EditCardStackView.bottomCardTapped(sender:)))
-
-        self.top.placeholder = "Question / Reminder"
-        self.bottom.placeholder = "Answer"
-        
         self.top.layer.masksToBounds = true
         self.top.layer.cornerRadius = 8.0
         
         self.top.layer.borderColor = UIColor.gray.cgColor
         self.top.layer.borderWidth = 1.0
         
+        self.top.backgroundColor = UIColor.white
         self.bottom.backgroundColor = UIColor.gray
         self.bottom.textColor = UIColor.white
         
@@ -101,14 +71,10 @@ class EditCardStackView: UIStackView {
         self.top.textAlignment = .center
         self.bottom.textAlignment = .center
         
+        self.top.font = UIFont.systemFont(ofSize: 17)
+        self.bottom.font = UIFont.systemFont(ofSize: 17)
+        
         addArrangedSubview(self.top)
         addArrangedSubview(self.bottom)
-        
-        
-//        self.top.addGestureRecognizer(self.toptapGestureRecognizer)
-//        self.bottom.addGestureRecognizer(self.bottomtapGestureRecognizer)
-        
-
     }
-    
 }

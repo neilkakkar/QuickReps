@@ -9,7 +9,7 @@
 import UIKit
 import os.log
 
-class EditCardViewController: UIViewController, UITextFieldDelegate {
+class EditCardViewController: UIViewController, UITextViewDelegate {
 
     var card: Card?
     
@@ -26,26 +26,49 @@ class EditCardViewController: UIViewController, UITextFieldDelegate {
         if let card = card {
             editCardView.top.text = card.top
             editCardView.bottom.text = card.bottom
+        } else {
+            editCardView.setPlaceholder()
         }
 
         updateSaveButtonState()
     }
     
-    //MARK: UITextFieldDelegate
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
+    //MARK: UITextViewDelegate
+    func textViewDidEndEditing(_ textView: UITextView) {
+        textView.resignFirstResponder()
+        updateSaveButtonState()
+        
+        if textView.text.isEmpty {
+            if textView.backgroundColor == UIColor.white {
+                textView.text = "Question / Reminder"
+                textView.textColor = UIColor.lightGray
+            } else {
+                textView.text = "Answer"
+                textView.textColor = UIColor.lightGray
+            }
+        }
+    
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        updateSaveButtonState()
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == UIColor.lightGray {
+            if textView.backgroundColor == UIColor.white {
+                textView.text = ""
+                textView.textColor = UIColor.black
+            } else {
+                textView.text = ""
+                textView.textColor = UIColor.white
+            }
+        }
     }
     
     func updateSaveButtonState() {
         let topText = editCardView.top.text ?? ""
         let bottomText = editCardView.bottom.text ?? ""
         
-        saveButton.isEnabled = !(topText.isEmpty || bottomText.isEmpty)
+        let topTextIsPlaceholder = editCardView.top.textColor == UIColor.lightGray
+        let bottomTextIsPlaceholder = editCardView.bottom.textColor == UIColor.lightGray
+        saveButton.isEnabled = !(topText.isEmpty || bottomText.isEmpty || topTextIsPlaceholder || bottomTextIsPlaceholder)
     }
     
     //MARK: Actions
