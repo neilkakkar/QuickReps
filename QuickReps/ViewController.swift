@@ -13,18 +13,23 @@ class ViewController: UIViewController {
     //MARK: Properties
     @IBOutlet weak var cardStackView: CardStackView!
     var initialCardCenter: CGPoint?
-    var cardDataController = CardDataController.shared
+    let cardDataController = CardDataController.shared
+    var todaysQueue: Queue<Card>?
     var currentCard: Card?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        currentCard = cardDataController.getNextCardToRemember()
+        todaysQueue = cardDataController.getTodaysQueue()
+        if todaysQueue == nil {
+            currentCard = CardDataController.noNewDataCard
+        } else {
+            currentCard = todaysQueue!.dequeue()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        dump(currentCard)
         if let cardData = currentCard {
             cardStackView.resetViewWithNewData(cardData: cardData)
         }
@@ -56,8 +61,12 @@ class ViewController: UIViewController {
                     card.alpha = 0
             },
                 completion: {(finished: Bool) in
-                    self.currentCard!.reps += 1
-                    self.cardDataController.setNextRevision(card: self.currentCard!, ease: 1)
+                    if self.currentCard!.cardType != Card.CardType.system {
+                        self.currentCard!.reps += 1
+                        self.cardDataController.setNextRevision(card: self.currentCard!, ease: 1)
+                        self.currentCard!.cardType = Card.CardType.revising
+                        self.todaysQueue?.enqueue(item: self.currentCard!)
+                    }
                     self.getNewCardData(card: card)
             })
         } else if card.center.x > self.view.frame.width - 75 {
@@ -68,8 +77,11 @@ class ViewController: UIViewController {
                     card.alpha = 0
             },
                 completion: {(finished: Bool) in
-                    self.currentCard!.reps += 1
-                    self.cardDataController.setNextRevision(card: self.currentCard!, ease: 4)
+                    if self.currentCard!.cardType != Card.CardType.system {
+                        self.currentCard!.reps += 1
+                        self.currentCard!.cardType = Card.CardType.learning
+                        self.cardDataController.setNextRevision(card: self.currentCard!, ease: 4)
+                    }
                     self.getNewCardData(card: card)
             })
         } else {
@@ -96,12 +108,18 @@ class ViewController: UIViewController {
         }
         card.center = cardCenter
         
-        if let newCard = cardDataController.getNextCardToRemember() {
+        if let newCard = todaysQueue?.dequeue() {
             card.resetViewWithNewData(cardData: newCard)
             self.currentCard = newCard
         } else {
-            card.resetViewWithNewData(cardData: CardDataController.noNewDataCard)
-            self.currentCard = CardDataController.noNewDataCard
+            if let newQueue = cardDataController.getTodaysQueue() {
+                todaysQueue = newQueue
+                card.resetViewWithNewData(cardData: CardDataController.refreshQueueDataCard)
+                self.currentCard = CardDataController.refreshQueueDataCard
+            } else {
+                card.resetViewWithNewData(cardData: CardDataController.noNewDataCard)
+                self.currentCard = CardDataController.noNewDataCard
+            }
         }
         UIView.animate(withDuration: 0.2) {
             card.alpha = 1

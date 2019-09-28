@@ -19,8 +19,7 @@ class Card: NSObject, NSCoding {
     var interval: TimeInterval // in seconds
     var easinessFactor: Double // between 1.3 and 2.5
     var reps: Int
-    var id: String
-//    var cardType: Int
+    var cardType: Int
     
     
     //MARK: Properties
@@ -32,17 +31,26 @@ class Card: NSObject, NSCoding {
         static let interval = "interval"
         static let easinessFactor = "easinessFactor"
         static let reps = "reps"
+        static let cardType = "cardType"
     }
     
     struct CardType {
-        static let new = 0
-        static let learning = 1
+        static let system = -1 // system generated cards
+        static let new = 0 // new card
+        static let learning = 1 // regular queue
+        static let revising = 2 // same day re-do
     }
     
     //MARK: Archiving Paths
     
     static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
     static let ArchiveURL = DocumentsDirectory.appendingPathComponent("cards")
+    
+    static func createSystemCard(top: String, bottom: String) -> Card {
+        let card = Card(top: top, bottom: bottom)
+        card.cardType = CardType.system
+        return card
+    }
     
     init(top: String, bottom: String) {
         self.dateAdded = Date()
@@ -52,12 +60,11 @@ class Card: NSObject, NSCoding {
         self.interval = 1*24*60 // 1 day
         self.easinessFactor = 2.5
         self.reps = 0
-        self.id = UUID().uuidString
-//        self.cardType = CardType.new
+        self.cardType = CardType.new
         super.init()
     }
     
-    init(top: String, bottom: String, dateAdded: Date, dueDate: Date, interval: TimeInterval, easinessFactor: Double, reps: Int) {
+    init(top: String, bottom: String, dateAdded: Date, dueDate: Date, interval: TimeInterval, easinessFactor: Double, reps: Int, cardType: Int) {
         self.top = top
         self.bottom = bottom
         self.dateAdded = dateAdded
@@ -65,7 +72,7 @@ class Card: NSObject, NSCoding {
         self.interval = interval
         self.easinessFactor = easinessFactor
         self.reps = reps
-        self.id = UUID().uuidString
+        self.cardType = cardType
         super.init()
     }
     
@@ -78,6 +85,7 @@ class Card: NSObject, NSCoding {
         aCoder.encode(self.interval, forKey: PropertyKey.interval)
         aCoder.encode(self.easinessFactor, forKey: PropertyKey.easinessFactor)
         aCoder.encode(self.reps, forKey: PropertyKey.reps)
+        aCoder.encode(self.cardType, forKey: PropertyKey.cardType)
         
     }
     
@@ -101,7 +109,8 @@ class Card: NSObject, NSCoding {
         let interval = aDecoder.decodeDouble(forKey: PropertyKey.interval)
         let easinessFactor = aDecoder.decodeDouble(forKey: PropertyKey.easinessFactor)
         let reps = aDecoder.decodeInteger(forKey: PropertyKey.reps)
+        let cardType = aDecoder.decodeInteger(forKey: PropertyKey.cardType)
         self.init(top: top, bottom: bottom, dateAdded: dateAdded, dueDate: dueDate,
-                  interval: interval, easinessFactor: easinessFactor, reps: reps)
+                  interval: interval, easinessFactor: easinessFactor, reps: reps, cardType: cardType)
     }
 }

@@ -14,38 +14,74 @@ class CardDataController {
     var cards = [Card]()
     var editCount: Int = 0
     static let shared = CardDataController()
-    static let noNewDataCard = Card(top: "No more cards today", bottom: "Great job!")
+    static let noNewDataCard = Card.createSystemCard(top: "No more cards today", bottom: "Great job!")
+    static let refreshQueueDataCard = Card.createSystemCard(top: "Getting more cards for today", bottom: "Good going!")
+    var tutorialQueue: Queue<Card>
 
     private init() {
+        tutorialQueue = Queue<Card>()
+        
         if let savedCards = loadCards() {
             cards = savedCards
         } else {
             loadSampleCards()
         }
+        
+        setupTutorialQueue()
+    }
+    
+    func getTodaysQueue() -> Queue<Card>? {
+        if UserManager.shared.getFirstLaunch() {
+            return tutorialQueue
+        }
+        
+        let dailyLimit = UserManager.shared.getDailyLimit()
+        var count = 0
+        
+        var todaysQueue = Queue<Card>()
+        for card in cards {
+            if card.dueDate < Date() {
+                todaysQueue.enqueue(item: card)
+                count += 1
+                
+                if count >= dailyLimit {
+                    break
+                }
+            }
+        }
+        
+        if todaysQueue.isEmpty() {
+            return nil
+        }
+        return todaysQueue
     }
 
-    func getNextCardToRemember() -> Card? {
+    func getNextCardToRemember(isTutorial: Bool = false) -> Card? {
         // super inefficient compared to a one pass queue?
-        let number = Int.random(in: 0 ..< cards.count)
         for card in cards {
             if card.dueDate < Date() {
                 return card
             }
         }
         return nil
-        
-//        return cards[number]
     }
     
     func setNextRevision(card: Card, ease: Int) {
+        if card.cardType == Card.CardType.revising {
+            if ease >= 3 {
+                card.cardType = Card.CardType.learning
+            }
+            return
+        }
+
         if ease < 3 {
             card.interval = 1*24*60 // 1 day
-        } else if card.reps == 1 {
+            card.cardType = Card.CardType.revising
+        } else if card.interval == 1*24*60 {
             card.interval = 6*24*60 // 6 days
         } else {
             let newInterval = ceil(card.interval * card.easinessFactor)
             card.interval = newInterval
-            print(card.interval, newInterval)
             let addend = createNewAddend(ease)
             let newEasinessFactor = card.easinessFactor + addend
             card.easinessFactor = newEasinessFactor
@@ -71,7 +107,7 @@ class CardDataController {
         editCount += 1
     }
     
-    func setObserverMode() {
+    func resetEditCount() {
         editCount = 0
     }
     
@@ -92,6 +128,17 @@ class CardDataController {
         } catch {
             os_log("Couldn't write to save file.", type: .debug)
         }
+    }
+    
+    func setupTutorialQueue() {
+        let step1 = Card.createSystemCard(top: "Welcome to QuickReps.\n Tap this card!", bottom: "This is the core activity.\n Swipe left or right.")
+        let step2 = Card.createSystemCard(top: "Generally, this card is for a question you're trying to recollect", bottom: "This place is where the answer shows up. Again, the answer as you deem fit. ")
+        let step3 = Card.createSystemCard(top: "What's the swiping for?", bottom: "Well, a right swipe means you remember the answer, while a left swipe means you don't.")
+        let step4 = Card.createSystemCard(top: "In either case, it's okay. Do you know what's the goal here?", bottom: "To help you learn better. A left swiped card shows up again more frequently than a right swiped card.")
+        let step5 = Card.createSystemCard(top: "Curious to know more?", bottom: "Check out www.<a cheap domain name when I find it>.com")
+        let step6 = Card.createSystemCard(top: "For now, let's get started. How to add more cards?", bottom: "Press the button on the top-right corner, and then the +")
+        tutorialQueue = Queue<Card>()
+        tutorialQueue += [step1, step2, step3, step4, step5, step6]
     }
     
     //MARK: Private

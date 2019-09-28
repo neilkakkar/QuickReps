@@ -20,7 +20,7 @@ class CardTableViewController: UITableViewController {
         
         cards = cardDataController.getAllCards()
 
-        cardDataController.setObserverMode()
+        cardDataController.resetEditCount()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -33,8 +33,8 @@ class CardTableViewController: UITableViewController {
         
         if cardDataController.hasUpdates() {
             cardDataController.saveCards()
-            cardDataController.setObserverMode()
-            // Doesn't work when Home button is pressed :$
+            cardDataController.resetEditCount()
+            // Doesn't work when Home button is pressed :$ - AppDelegate.swift handles that
         }
     }
 

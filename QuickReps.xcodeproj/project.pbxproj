@@ -3,13 +3,15 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		076906FB0BB72B5FEC5E29A9 /* Pods_QuickRepsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EED3C30D15E4AE2CB695EB31 /* Pods_QuickRepsTests.framework */; };
 		A408A3A96A9C95DE6F17F21A /* Pods_QuickReps_QuickRepsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FB0ACEFE4432A797797489B /* Pods_QuickReps_QuickRepsUITests.framework */; };
 		AD44895C233648E2009FBB98 /* CardDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD44895B233648E2009FBB98 /* CardDataController.swift */; };
+		AD474066233E8F22003F455C /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD474065233E8F22003F455C /* Queue.swift */; };
+		AD474068233E9AF9003F455C /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD474067233E9AF9003F455C /* UserManager.swift */; };
 		ADBBD144233407C4007B9366 /* EditCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBBD143233407C4007B9366 /* EditCardViewController.swift */; };
 		ADBBD14623340855007B9366 /* EditCardStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBBD14523340855007B9366 /* EditCardStackView.swift */; };
 		ADE6CF14231C09F400BC793E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE6CF13231C09F400BC793E /* AppDelegate.swift */; };
@@ -50,6 +52,8 @@
 		9FB0ACEFE4432A797797489B /* Pods_QuickReps_QuickRepsUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuickReps_QuickRepsUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA70B54C38DD98A214BB100F /* Pods-QuickRepsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuickRepsTests.release.xcconfig"; path = "Target Support Files/Pods-QuickRepsTests/Pods-QuickRepsTests.release.xcconfig"; sourceTree = "<group>"; };
 		AD44895B233648E2009FBB98 /* CardDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDataController.swift; sourceTree = "<group>"; };
+		AD474065233E8F22003F455C /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
+		AD474067233E9AF9003F455C /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		ADBBD143233407C4007B9366 /* EditCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardViewController.swift; sourceTree = "<group>"; };
 		ADBBD14523340855007B9366 /* EditCardStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardStackView.swift; sourceTree = "<group>"; };
 		ADE6CF10231C09F400BC793E /* QuickReps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickReps.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -140,12 +144,14 @@
 			children = (
 				ADE6CF13231C09F400BC793E /* AppDelegate.swift */,
 				ADE6CF15231C09F400BC793E /* ViewController.swift */,
+				AD474065233E8F22003F455C /* Queue.swift */,
 				ADE6CF44231C0EF600BC793E /* CardStackView.swift */,
 				ADE6CF17231C09F400BC793E /* Main.storyboard */,
 				ADBBD14523340855007B9366 /* EditCardStackView.swift */,
 				ADBBD143233407C4007B9366 /* EditCardViewController.swift */,
 				ADE6CF482332C5F100BC793E /* CardTableViewController.swift */,
 				AD44895B233648E2009FBB98 /* CardDataController.swift */,
+				AD474067233E9AF9003F455C /* UserManager.swift */,
 				ADE6CF46231C20E200BC793E /* Card.swift */,
 				ADE6CF1D231C09F600BC793E /* Assets.xcassets */,
 				ADE6CF1F231C09F600BC793E /* LaunchScreen.storyboard */,
@@ -183,7 +189,6 @@
 				5F5C9A7EF886A1BFD9925A6E /* Pods-QuickRepsTests.debug.xcconfig */,
 				AA70B54C38DD98A214BB100F /* Pods-QuickRepsTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -431,9 +436,11 @@
 				AD44895C233648E2009FBB98 /* CardDataController.swift in Sources */,
 				ADE6CF47231C20E200BC793E /* Card.swift in Sources */,
 				ADBBD14623340855007B9366 /* EditCardStackView.swift in Sources */,
+				AD474066233E8F22003F455C /* Queue.swift in Sources */,
 				ADE6CF16231C09F400BC793E /* ViewController.swift in Sources */,
 				ADBBD144233407C4007B9366 /* EditCardViewController.swift in Sources */,
 				ADE6CF14231C09F400BC793E /* AppDelegate.swift in Sources */,
+				AD474068233E9AF9003F455C /* UserManager.swift in Sources */,
 				ADE6CF492332C5F100BC793E /* CardTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

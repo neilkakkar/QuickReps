@@ -19,9 +19,44 @@ class QuickRepsTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() {
+    func testQueue() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        var queue = Queue<Int>()
+        queue.enqueue(item: 1)
+        
+        XCTAssert(1 == queue.dequeue())
+        
+        queue.enqueue(item: 1)
+        queue.enqueue(item: 2)
+        queue.enqueue(item: 3)
+        
+        XCTAssert(1 == queue.dequeue())
+        XCTAssert(2 == queue.dequeue())
+        
+        XCTAssert(!queue.isEmpty())
+        
+        queue.enqueue(item: 4)
+        
+        XCTAssert(3 == queue.dequeue())
+        XCTAssert(4 == queue.dequeue())
+        XCTAssert(nil == queue.dequeue())
+        
+        XCTAssert(queue.isEmpty())
+        
+        queue.enqueue(items: [1, 2, 3, 4])
+        
+        XCTAssert(1 == queue.dequeue())
+        XCTAssert(2 == queue.dequeue())
+        XCTAssert(3 == queue.dequeue())
+        XCTAssert(4 == queue.dequeue())
+        
+        queue += [1, 2, 3, 4]
+        
+        XCTAssert(1 == queue.dequeue())
+        XCTAssert(2 == queue.dequeue())
+        XCTAssert(3 == queue.dequeue())
+        XCTAssert(4 == queue.dequeue())
     }
 
     func testPerformanceExample() {
