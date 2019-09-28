@@ -40,12 +40,7 @@ class Card: NSObject, NSCoding {
         static let learning = 1 // regular queue
         static let revising = 2 // same day re-do
     }
-    
-    //MARK: Archiving Paths
-    
-    static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("cards")
-    
+
     static func createSystemCard(top: String, bottom: String) -> Card {
         let card = Card(top: top, bottom: bottom)
         card.cardType = CardType.system

@@ -17,6 +17,11 @@ class CardDataController {
     static let noNewDataCard = Card.createSystemCard(top: "No more cards today", bottom: "Great job!")
     static let refreshQueueDataCard = Card.createSystemCard(top: "Getting more cards for today", bottom: "Good going!")
     var tutorialQueue: Queue<Card>
+    
+    //MARK: Archiving Paths
+    static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("cards")
+    
 
     private init() {
         tutorialQueue = Queue<Card>()
@@ -124,19 +129,19 @@ class CardDataController {
         let codedData = try! NSKeyedArchiver.archivedData(withRootObject: cards, requiringSecureCoding: false)
         
         do {
-            try codedData.write(to: Card.ArchiveURL)
+            try codedData.write(to: CardDataController.ArchiveURL)
         } catch {
             os_log("Couldn't write to save file.", type: .debug)
         }
     }
     
     func setupTutorialQueue() {
-        let step1 = Card.createSystemCard(top: "Welcome to QuickReps.\n Tap this card!", bottom: "This is the core activity.\n Swipe left or right.")
-        let step2 = Card.createSystemCard(top: "Generally, this card is for a question you're trying to recollect", bottom: "This place is where the answer shows up. Again, the answer as you deem fit. ")
+        let step1 = Card.createSystemCard(top: "Welcome to QuickReps.\n Tap this card!", bottom: "This is the core activity. We'll be doing a lot of tapping and swiping.\n Speaking of, go ahead and swipe: left or right.")
+        let step2 = Card.createSystemCard(top: "Generally, this card is for a question you're trying to recollect", bottom: "This place is where the answer shows up.")
         let step3 = Card.createSystemCard(top: "What's the swiping for?", bottom: "Well, a right swipe means you remember the answer, while a left swipe means you don't.")
-        let step4 = Card.createSystemCard(top: "In either case, it's okay. Do you know what's the goal here?", bottom: "To help you learn better. A left swiped card shows up again more frequently than a right swiped card.")
+        let step4 = Card.createSystemCard(top: "In either case, it's okay. Do you know what's the goal here?", bottom: "To help you learn better.\n A left swiped card shows up more frequently than a right swiped card.")
         let step5 = Card.createSystemCard(top: "Curious to know more?", bottom: "Check out www.<a cheap domain name when I find it>.com")
-        let step6 = Card.createSystemCard(top: "For now, let's get started. How to add more cards?", bottom: "Press the button on the top-right corner, and then the +")
+        let step6 = Card.createSystemCard(top: "For now, let's get started.\n How to add more cards?", bottom: "Press the button on the top-right corner, and then the +")
         tutorialQueue = Queue<Card>()
         tutorialQueue += [step1, step2, step3, step4, step5, step6]
     }
@@ -164,8 +169,8 @@ class CardDataController {
     }
     
     private func loadCards() -> [Card]? {
-        print(Card.ArchiveURL.absoluteString)
-        guard let codedData = try? Data(contentsOf: Card.ArchiveURL) else { return nil }
+        print(CardDataController.ArchiveURL.absoluteString)
+        guard let codedData = try? Data(contentsOf: CardDataController.ArchiveURL) else { return nil }
         
         let cards = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(codedData) as? [Card]
         return cards
