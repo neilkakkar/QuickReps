@@ -12,6 +12,7 @@
 		AD44895C233648E2009FBB98 /* CardDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD44895B233648E2009FBB98 /* CardDataController.swift */; };
 		AD474066233E8F22003F455C /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD474065233E8F22003F455C /* Queue.swift */; };
 		AD474068233E9AF9003F455C /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD474067233E9AF9003F455C /* UserManager.swift */; };
+		AD47406A233F65B5003F455C /* UILabelX.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD474069233F65B5003F455C /* UILabelX.swift */; };
 		ADBBD144233407C4007B9366 /* EditCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBBD143233407C4007B9366 /* EditCardViewController.swift */; };
 		ADBBD14623340855007B9366 /* EditCardStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBBD14523340855007B9366 /* EditCardStackView.swift */; };
 		ADE6CF14231C09F400BC793E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE6CF13231C09F400BC793E /* AppDelegate.swift */; };
@@ -54,6 +55,7 @@
 		AD44895B233648E2009FBB98 /* CardDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDataController.swift; sourceTree = "<group>"; };
 		AD474065233E8F22003F455C /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		AD474067233E9AF9003F455C /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
+		AD474069233F65B5003F455C /* UILabelX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelX.swift; sourceTree = "<group>"; };
 		ADBBD143233407C4007B9366 /* EditCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardViewController.swift; sourceTree = "<group>"; };
 		ADBBD14523340855007B9366 /* EditCardStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardStackView.swift; sourceTree = "<group>"; };
 		ADE6CF10231C09F400BC793E /* QuickReps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickReps.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -146,6 +148,7 @@
 				ADE6CF15231C09F400BC793E /* ViewController.swift */,
 				AD474065233E8F22003F455C /* Queue.swift */,
 				ADE6CF44231C0EF600BC793E /* CardStackView.swift */,
+				AD474069233F65B5003F455C /* UILabelX.swift */,
 				ADE6CF17231C09F400BC793E /* Main.storyboard */,
 				ADBBD14523340855007B9366 /* EditCardStackView.swift */,
 				ADBBD143233407C4007B9366 /* EditCardViewController.swift */,
@@ -434,6 +437,7 @@
 				ADE6CF1C231C09F400BC793E /* QuickReps.xcdatamodeld in Sources */,
 				ADE6CF45231C0EF600BC793E /* CardStackView.swift in Sources */,
 				AD44895C233648E2009FBB98 /* CardDataController.swift in Sources */,
+				AD47406A233F65B5003F455C /* UILabelX.swift in Sources */,
 				ADE6CF47231C20E200BC793E /* Card.swift in Sources */,
 				ADBBD14623340855007B9366 /* EditCardStackView.swift in Sources */,
 				AD474066233E8F22003F455C /* Queue.swift in Sources */,

@@ -12,16 +12,16 @@ import UIKit
 class CardStackView: UIStackView {
     
     var tapGestureRecognizer: UITapGestureRecognizer
-    var top: UILabel
-    var bottom: UILabel
+    var top: UILabelX
+    var bottom: UILabelX
     var cardData: Card
 
     //MARK: Initialization
     override init(frame: CGRect) {
         
         self.tapGestureRecognizer = UITapGestureRecognizer()
-        self.top = UILabel()
-        self.bottom = UILabel()
+        self.top = UILabelX()
+        self.bottom = UILabelX()
         self.cardData = Card(top: "upper", bottom: "lower")
         
         super.init(frame: frame)
@@ -32,8 +32,8 @@ class CardStackView: UIStackView {
     required init(coder: NSCoder) {
         
         self.tapGestureRecognizer = UITapGestureRecognizer()
-        self.top = UILabel()
-        self.bottom = UILabel()
+        self.top = UILabelX()
+        self.bottom = UILabelX()
         self.cardData = Card(top: "Tap card to reveal answer", bottom: "Swipe left if you don't remember, right if you do.")
 
         super.init(coder: coder)
@@ -75,6 +75,7 @@ class CardStackView: UIStackView {
         
         self.top.layer.borderColor = UIColor.gray.cgColor
         self.top.layer.borderWidth = 1.0
+        self.top.backgroundColor = UIColor.white
         
         self.bottom.layer.masksToBounds = true
         self.bottom.layer.cornerRadius = 8.0
@@ -89,6 +90,9 @@ class CardStackView: UIStackView {
         self.bottom.numberOfLines = 0
         
         self.bottom.alpha = 0
+        
+        self.top.font = UIFont.systemFont(ofSize: 17)
+        self.bottom.font = UIFont.systemFont(ofSize: 17)
         
         addArrangedSubview(self.top)
         addArrangedSubview(self.bottom)
