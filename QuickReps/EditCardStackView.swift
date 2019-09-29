@@ -59,8 +59,11 @@ class EditCardStackView: UIStackView {
         self.top.layer.borderWidth = 1.0
         
         self.top.backgroundColor = UIColor.white
+        self.top.textColor = UIColor.black
+        
         self.bottom.backgroundColor = UIColor.gray
         self.bottom.textColor = UIColor.white
+        
         
         self.bottom.layer.masksToBounds = true
         self.bottom.layer.cornerRadius = 8.0

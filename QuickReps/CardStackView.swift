@@ -14,7 +14,7 @@ class CardStackView: UIStackView {
     var tapGestureRecognizer: UITapGestureRecognizer
     var top: UILabelX
     var bottom: UILabelX
-    var cardData: Card
+    var cardData: Card = Card(top: "Tap card to reveal answer", bottom: "Swipe left if you don't remember, right if you do.")
 
     //MARK: Initialization
     override init(frame: CGRect) {
@@ -22,8 +22,7 @@ class CardStackView: UIStackView {
         self.tapGestureRecognizer = UITapGestureRecognizer()
         self.top = UILabelX()
         self.bottom = UILabelX()
-        self.cardData = Card(top: "upper", bottom: "lower")
-        
+
         super.init(frame: frame)
         
         setupView()
@@ -34,7 +33,6 @@ class CardStackView: UIStackView {
         self.tapGestureRecognizer = UITapGestureRecognizer()
         self.top = UILabelX()
         self.bottom = UILabelX()
-        self.cardData = Card(top: "Tap card to reveal answer", bottom: "Swipe left if you don't remember, right if you do.")
 
         super.init(coder: coder)
         
@@ -76,6 +74,7 @@ class CardStackView: UIStackView {
         self.top.layer.borderColor = UIColor.gray.cgColor
         self.top.layer.borderWidth = 1.0
         self.top.backgroundColor = UIColor.white
+        self.top.textColor = UIColor.black
         
         self.bottom.layer.masksToBounds = true
         self.bottom.layer.cornerRadius = 8.0

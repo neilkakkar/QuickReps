@@ -14,12 +14,13 @@ class CardTableViewController: UITableViewController {
     //MARK: Properties
     var cardDataController = CardDataController.shared
     var cards = [Card]()
+    var dailyCards = [Card]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        cards = cardDataController.getAllCards()
-
+        cards = cardDataController.getCards()
+        dailyCards = cardDataController.getCards(daily: true)
         cardDataController.resetEditCount()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -41,10 +42,13 @@ class CardTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            return dailyCards.count
+        }
         return cards.count
     }
 
@@ -52,11 +56,14 @@ class CardTableViewController: UITableViewController {
         let cellIdentifier = "CardTableViewCell"
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
 
-        let card = self.cards[indexPath.row]
+        var card: Card
+        if indexPath.section == 0 {
+            card = dailyCards[indexPath.row]
+        } else {
+            card = cards[indexPath.row]
+        }
         // Configure the cell...
         cell.textLabel!.text = card.top
-//        cell.detailTextLabel!.text = card.bottom
-
         return cell
     }
 
@@ -69,30 +76,21 @@ class CardTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            cards.remove(at: indexPath.row)
-            cardDataController.deleteCard(at: indexPath.row)
-//            cardDataController.saveCards()
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            // and from tableview
+            deleteCard(tableView, at: indexPath)
             
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
 
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 0 {
+            return "Daily Reminder Cards"
+        } else {
+            return "Regular Cards"
+        }
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
     // MARK: - Navigation
 
@@ -115,7 +113,7 @@ class CardTableViewController: UITableViewController {
                 fatalError("Select card not displayed")
             }
             
-            let selectedCard = cards[indexPath.row]
+            let selectedCard = getArrayFromSection(indexPath.section)[indexPath.row]
             editCardViewController.card = selectedCard
             editCardViewController.navigationItem.title = "Edit Card"
             
@@ -128,17 +126,66 @@ class CardTableViewController: UITableViewController {
     @IBAction func unwindToCardList(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? EditCardViewController, let card = sourceViewController.card {
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
-                cards[selectedIndexPath.row] = card
-                cardDataController.updateCard(at: selectedIndexPath.row, card: card)
-                tableView.reloadRows(at: [selectedIndexPath], with: .none)
+                // edit card view
+                
+                // check if type change
+                let newCardType = card.cardType
+                let oldCardType: Card.CardType = selectedIndexPath.section == 0 ? .daily : .learning
+                
+                if newCardType != oldCardType {
+                    updateCardWithSectionChange(tableView, card: card, from: selectedIndexPath)
+                } else {
+                    updateCard(tableView, card: card, at: selectedIndexPath)
+                }
                 
             } else {
-                let newIndexPath = IndexPath(row: cards.count, section: 0)
-                cards.append(card)
-                cardDataController.addCard(card: card)
-                tableView.insertRows(at: [newIndexPath], with: .automatic)
+                addCard(tableView, card: card)
             }
-//            cardDataController.saveCards()
         }
+    }
+    
+    //MARK: Private
+    private func getArrayFromSection(_ section: Int) -> [Card] {
+        if section == 0 {
+            return dailyCards
+        } else {
+            return cards
+        }
+    }
+
+    private func addCard(_ tableView: UITableView, card: Card) {
+        let cardSection = card.cardType == Card.CardType.daily ? 0 : 1
+        let cardRow = cardSection == 0 ? dailyCards.count : cards.count
+        let newIndexPath = IndexPath(row: cardRow, section: cardSection)
+        
+        cardSection == 0 ? dailyCards.append(card) : cards.append(card)
+        cardDataController.addCard(card: card)
+        tableView.insertRows(at: [newIndexPath], with: .automatic)
+    }
+    
+    private func deleteCard(_ tableView: UITableView, at indexPath: IndexPath) {
+        // assume called from the table slide always, so no chance of modifications from one type to another
+        if indexPath.section == 0 {
+            dailyCards.remove(at: indexPath.row)
+        } else {
+            cards.remove(at: indexPath.row)
+        }
+        cardDataController.deleteCard(at: indexPath.row, isDaily: indexPath.section == 0)
+        tableView.deleteRows(at: [indexPath], with: .fade)
+    }
+    
+    private func updateCard(_ tableView: UITableView, card: Card, at indexPath: IndexPath) {
+        if indexPath.section == 0 {
+            dailyCards[indexPath.row] = card
+        } else {
+            cards[indexPath.row] = card
+        }
+        cardDataController.updateCard(at: indexPath.row, card: card)
+        tableView.reloadRows(at: [indexPath], with: .none)
+    }
+    
+    private func updateCardWithSectionChange(_ tableView: UITableView, card: Card, from: IndexPath) {
+        deleteCard(tableView, at: from)
+        addCard(tableView, card: card)
     }
 }

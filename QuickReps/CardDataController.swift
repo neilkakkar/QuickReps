@@ -12,15 +12,18 @@ import os.log
 class CardDataController {
     
     var cards = [Card]()
+    var dailyCards = [Card]()
     var editCount: Int = 0
     static let shared = CardDataController()
     static let noNewDataCard = Card.createSystemCard(top: "No more cards today", bottom: "Great job!")
     static let refreshQueueDataCard = Card.createSystemCard(top: "Getting more cards for today", bottom: "Good going!")
+    static let totalZeroCard = Card.createSystemCard(top: "Add a new card to begin", bottom: "No cards exist, yet.")
     var tutorialQueue: Queue<Card>
     
     //MARK: Archiving Paths
     static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
     static let ArchiveURL = DocumentsDirectory.appendingPathComponent("cards")
+    static let DailyArchiveURL = DocumentsDirectory.appendingPathComponent("dailyCards")
     
 
     private init() {
@@ -32,7 +35,21 @@ class CardDataController {
             loadSampleCards()
         }
         
+        if let savedDailyCards = loadDailyCards() {
+            dailyCards = savedDailyCards
+        }
+        
         setupTutorialQueue()
+    }
+    
+    func getDailyQueue() -> Queue<Card>? {
+        var dailyQueue = Queue<Card>()
+        dailyQueue += dailyCards
+        
+        if dailyQueue.isEmpty() {
+            return nil
+        }
+        return dailyQueue
     }
     
     func getTodaysQueue() -> Queue<Card>? {
@@ -72,8 +89,14 @@ class CardDataController {
     }
     
     func setNextRevision(card: Card, ease: Int) {
+        if card.cardType == .daily {
+            return
+        }
+
         if card.cardType == Card.CardType.revising {
+            // normal card revising
             if ease >= 3 {
+                // success
                 card.cardType = Card.CardType.learning
             }
             return
@@ -97,39 +120,59 @@ class CardDataController {
     }
     
     func addCard(card: Card) {
-        cards.append(card)
+        if card.cardType == .daily {
+            dailyCards.append(card)
+        } else {
+            cards.append(card)
+        }
         editCount += 1
     }
     
-    func deleteCard(at: Int) {
-        cards.remove(at: at)
+    func deleteCard(at: Int, isDaily: Bool = false) {
+        if isDaily {
+            dailyCards.remove(at: at)
+        } else {
+            cards.remove(at: at)
+        }
         editCount += 1
-        
     }
     
     func updateCard(at: Int, card: Card) {
-        cards[at] = card
+        if card.cardType == .daily {
+            dailyCards[at] = card
+        } else {
+            cards[at] = card
+        }
         editCount += 1
     }
+    
+//    func updateCardAndMoveTypes(from: Int, card: Card, toDaily: Bool) {
+//        addCard(card: card, isDaily: toDaily)
+//        deleteCard(at: from, isDaily: !toDaily)
+//    }
     
     func resetEditCount() {
         editCount = 0
     }
     
     func hasUpdates() -> Bool {
-        print(editCount, "edits")
         return editCount > 0
     }
     
-    func getAllCards() -> [Card] {
+    func getCards(daily: Bool = false) -> [Card] {
+        if daily {
+            return dailyCards
+        }
         return cards
     }
     
     func saveCards() {
-        let codedData = try! NSKeyedArchiver.archivedData(withRootObject: cards, requiringSecureCoding: false)
+        let codedCardsData = try! NSKeyedArchiver.archivedData(withRootObject: cards, requiringSecureCoding: false)
+        let codedDailyData = try! NSKeyedArchiver.archivedData(withRootObject: dailyCards, requiringSecureCoding: false)
         
         do {
-            try codedData.write(to: CardDataController.ArchiveURL)
+            try codedCardsData.write(to: CardDataController.ArchiveURL)
+            try codedDailyData.write(to: CardDataController.DailyArchiveURL)
         } catch {
             os_log("Couldn't write to save file.", type: .debug)
         }
@@ -171,6 +214,13 @@ class CardDataController {
     private func loadCards() -> [Card]? {
         print(CardDataController.ArchiveURL.absoluteString)
         guard let codedData = try? Data(contentsOf: CardDataController.ArchiveURL) else { return nil }
+        
+        let cards = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(codedData) as? [Card]
+        return cards
+    }
+    
+    private func loadDailyCards() -> [Card]? {
+        guard let codedData = try? Data(contentsOf: CardDataController.DailyArchiveURL) else { return nil }
         
         let cards = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(codedData) as? [Card]
         return cards

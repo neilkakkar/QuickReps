@@ -36,6 +36,20 @@ class ViewController: UIViewController {
         super.viewWillAppear(animated)
     }
     
+    
+    @IBAction func addNewCard(_ sender: UIBarButtonItem) {
+        let cardTableViewController = self.storyboard?.instantiateViewController(withIdentifier: "CardTableViewController") as! CardTableViewController
+        let cardDataController = self.storyboard?.instantiateViewController(withIdentifier: "EditCardViewControllerNavigator") as! UINavigationController
+        
+        self.navigationController?.pushViewController(cardTableViewController, animated: false)
+        self.navigationController?.present(cardDataController, animated: true, completion: nil)
+    }
+    
+    
+    @IBAction func toggleMode(_ sender: UIBarButtonItem) {
+        
+    }
+    
     @IBAction func panCard(_ sender: UIPanGestureRecognizer) {
         let card = sender.view as! CardStackView
         let point = sender.translation(in: self.view)

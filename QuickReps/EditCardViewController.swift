@@ -16,9 +16,14 @@ class EditCardViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var editCardView: EditCardStackView!
+    @IBOutlet weak var dailyStackView: UIStackView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        let constraint = NSLayoutConstraint(item: dailyStackView!, attribute: .width, relatedBy: .equal, toItem: editCardView, attribute: .width, multiplier: 1, constant: 0)
+        view.addConstraint(constraint)
         
         editCardView.top.delegate = self
         editCardView.bottom.delegate = self
@@ -26,6 +31,8 @@ class EditCardViewController: UIViewController, UITextViewDelegate {
         if let card = card {
             editCardView.top.text = card.top
             editCardView.bottom.text = card.bottom
+            getDailySwitch().setOn(card.cardType == .daily, animated: false)
+            
         } else {
             editCardView.setPlaceholder()
         }
@@ -38,6 +45,8 @@ class EditCardViewController: UIViewController, UITextViewDelegate {
         textView.resignFirstResponder()
         updateSaveButtonState()
         
+        dump(textView.backgroundColor)
+        //TK BUG: With iOS 13 and dark mode, gotta figure this out. UIDynamicSystemColor vs UIColor
         if textView.text.isEmpty {
             if textView.backgroundColor == UIColor.white {
                 textView.text = "Question / Reminder"
@@ -104,5 +113,21 @@ class EditCardViewController: UIViewController, UITextViewDelegate {
         } else {
             card = Card(top: top, bottom: bottom)
         }
+        
+        if isDailyCard() {
+            card!.setCardType(type: .daily)
+        } else {
+            if card!.cardType == .daily {
+                card!.setCardType(type: .learning)
+            }
+        }
+    }
+    
+    //MARK:  Private
+    private func getDailySwitch() -> UISwitch {
+        return dailyStackView.arrangedSubviews[1] as! UISwitch
+    }
+    private func isDailyCard() -> Bool {
+        return getDailySwitch().isOn
     }
 }

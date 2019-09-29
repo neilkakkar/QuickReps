@@ -19,7 +19,7 @@ class Card: NSObject, NSCoding {
     var interval: TimeInterval // in seconds
     var easinessFactor: Double // between 1.3 and 2.5
     var reps: Int
-    var cardType: Int
+    var cardType: CardType
     
     
     //MARK: Properties
@@ -34,11 +34,13 @@ class Card: NSObject, NSCoding {
         static let cardType = "cardType"
     }
     
-    struct CardType {
-        static let system = -1 // system generated cards
-        static let new = 0 // new card
-        static let learning = 1 // regular queue
-        static let revising = 2 // same day re-do
+    enum CardType: Int {
+        case system = 0, new, learning, revising, daily
+        // system = system generated cards
+        // new = new card
+        // learning = regular queue
+        // revising = same day re-do
+        // daily = always one day interval
     }
 
     static func createSystemCard(top: String, bottom: String) -> Card {
@@ -59,7 +61,7 @@ class Card: NSObject, NSCoding {
         super.init()
     }
     
-    init(top: String, bottom: String, dateAdded: Date, dueDate: Date, interval: TimeInterval, easinessFactor: Double, reps: Int, cardType: Int) {
+    init(top: String, bottom: String, dateAdded: Date, dueDate: Date, interval: TimeInterval, easinessFactor: Double, reps: Int, cardType: CardType) {
         self.top = top
         self.bottom = bottom
         self.dateAdded = dateAdded
@@ -71,6 +73,10 @@ class Card: NSObject, NSCoding {
         super.init()
     }
     
+    func setCardType(type: CardType) {
+        self.cardType = type
+    }
+    
     //MARK: NSCoding
     func encode(with aCoder: NSCoder) {
         aCoder.encode(self.top, forKey: PropertyKey.top)
@@ -80,7 +86,7 @@ class Card: NSObject, NSCoding {
         aCoder.encode(self.interval, forKey: PropertyKey.interval)
         aCoder.encode(self.easinessFactor, forKey: PropertyKey.easinessFactor)
         aCoder.encode(self.reps, forKey: PropertyKey.reps)
-        aCoder.encode(self.cardType, forKey: PropertyKey.cardType)
+        aCoder.encode(self.cardType.rawValue, forKey: PropertyKey.cardType)
         
     }
     
@@ -101,10 +107,15 @@ class Card: NSObject, NSCoding {
             os_log("Unable to decode due date", type: .debug)
             return nil
         }
+        guard let cardType = CardType(rawValue: aDecoder.decodeInteger(forKey: PropertyKey.cardType)) else {
+            os_log("Unable to decode card type", type: .debug)
+            return nil
+        }
+        
         let interval = aDecoder.decodeDouble(forKey: PropertyKey.interval)
         let easinessFactor = aDecoder.decodeDouble(forKey: PropertyKey.easinessFactor)
         let reps = aDecoder.decodeInteger(forKey: PropertyKey.reps)
-        let cardType = aDecoder.decodeInteger(forKey: PropertyKey.cardType)
+        
         self.init(top: top, bottom: bottom, dateAdded: dateAdded, dueDate: dueDate,
                   interval: interval, easinessFactor: easinessFactor, reps: reps, cardType: cardType)
     }
