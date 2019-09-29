@@ -11,17 +11,11 @@ import UIKit
 @IBDesignable
 class EditCardStackView: UIStackView {
 
-//    var toptapGestureRecognizer: UITapGestureRecognizer
-//    var bottomtapGestureRecognizer: UITapGestureRecognizer
     var top: UITextView
     var bottom: UITextView
     
     //MARK: Initialization
     override init(frame: CGRect) {
-        
-//        self.toptapGestureRecognizer = UITapGestureRecognizer()
-//        self.bottomtapGestureRecognizer = UITapGestureRecognizer()
-        
         self.top = UITextView()
         self.bottom = UITextView()
         
@@ -31,10 +25,6 @@ class EditCardStackView: UIStackView {
     }
     
     required init(coder: NSCoder) {
-        
-//        self.toptapGestureRecognizer = UITapGestureRecognizer()
-//        self.bottomtapGestureRecognizer = UITapGestureRecognizer()
-        
         self.top = UITextView()
         self.bottom = UITextView()
         

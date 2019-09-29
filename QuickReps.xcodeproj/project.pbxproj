@@ -26,6 +26,7 @@
 		ADE6CF45231C0EF600BC793E /* CardStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE6CF44231C0EF600BC793E /* CardStackView.swift */; };
 		ADE6CF47231C20E200BC793E /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE6CF46231C20E200BC793E /* Card.swift */; };
 		ADE6CF492332C5F100BC793E /* CardTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE6CF482332C5F100BC793E /* CardTableViewController.swift */; };
+		ADE9E2AD23410498000AE6F5 /* TableHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE9E2AC23410498000AE6F5 /* TableHeaderFooterView.swift */; };
 		B61A5E202D148837325288AA /* Pods_QuickReps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BCF676BC08F1E3D67B0E410 /* Pods_QuickReps.framework */; };
 /* End PBXBuildFile section */
 
@@ -75,6 +76,7 @@
 		ADE6CF44231C0EF600BC793E /* CardStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardStackView.swift; sourceTree = "<group>"; };
 		ADE6CF46231C20E200BC793E /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		ADE6CF482332C5F100BC793E /* CardTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTableViewController.swift; sourceTree = "<group>"; };
+		ADE9E2AC23410498000AE6F5 /* TableHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TableHeaderFooterView.swift; path = /Users/nkakkar/iOS/QuickReps/QuickReps/TableHeaderFooterView.swift; sourceTree = "<absolute>"; };
 		BF355E7841F451025D746FF5 /* Pods-QuickReps.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuickReps.release.xcconfig"; path = "Target Support Files/Pods-QuickReps/Pods-QuickReps.release.xcconfig"; sourceTree = "<group>"; };
 		E00A6B23BB3AC46744610B1D /* Pods-QuickReps-QuickRepsUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuickReps-QuickRepsUITests.debug.xcconfig"; path = "Target Support Files/Pods-QuickReps-QuickRepsUITests/Pods-QuickReps-QuickRepsUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		EED3C30D15E4AE2CB695EB31 /* Pods_QuickRepsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuickRepsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -148,6 +150,7 @@
 				ADE6CF15231C09F400BC793E /* ViewController.swift */,
 				AD474065233E8F22003F455C /* Queue.swift */,
 				ADE6CF44231C0EF600BC793E /* CardStackView.swift */,
+				ADE9E2AC23410498000AE6F5 /* TableHeaderFooterView.swift */,
 				AD474069233F65B5003F455C /* UILabelX.swift */,
 				ADE6CF17231C09F400BC793E /* Main.storyboard */,
 				ADBBD14523340855007B9366 /* EditCardStackView.swift */,
@@ -440,6 +443,7 @@
 				AD47406A233F65B5003F455C /* UILabelX.swift in Sources */,
 				ADE6CF47231C20E200BC793E /* Card.swift in Sources */,
 				ADBBD14623340855007B9366 /* EditCardStackView.swift in Sources */,
+				ADE9E2AD23410498000AE6F5 /* TableHeaderFooterView.swift in Sources */,
 				AD474066233E8F22003F455C /* Queue.swift in Sources */,
 				ADE6CF16231C09F400BC793E /* ViewController.swift in Sources */,
 				ADBBD144233407C4007B9366 /* EditCardViewController.swift in Sources */,

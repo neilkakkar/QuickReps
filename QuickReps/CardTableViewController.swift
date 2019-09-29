@@ -91,6 +91,10 @@ class CardTableViewController: UITableViewController {
             return "Regular Cards"
         }
     }
+    
+//    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        return UITableViewHeaderFooterView()
+//    }
 
     // MARK: - Navigation
 
