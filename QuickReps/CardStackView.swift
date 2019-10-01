@@ -15,7 +15,8 @@ class CardStackView: UIStackView {
     var top: UILabelX
     var bottom: UILabelX
     var cardData: Card = Card(top: "Tap card to reveal answer", bottom: "Swipe left if you don't remember, right if you do.")
-
+    let colorManager = ColorManager()
+    
     //MARK: Initialization
     override init(frame: CGRect) {
         
@@ -44,8 +45,8 @@ class CardStackView: UIStackView {
         if sender.state == .ended {
             UIView.animate(withDuration: 0.3)  {
                 self.bottom.alpha = 1
-                self.bottom.backgroundColor = UIColor.gray
-                self.bottom.textColor = UIColor.white
+                self.bottom.backgroundColor = self.colorManager.bottomBackground
+                self.bottom.textColor = self.colorManager.bottomLabelText
             }
         }
     }
@@ -71,10 +72,16 @@ class CardStackView: UIStackView {
         self.top.layer.masksToBounds = true
         self.top.layer.cornerRadius = 8.0
         
-        self.top.layer.borderColor = UIColor.gray.cgColor
         self.top.layer.borderWidth = 1.0
-        self.top.backgroundColor = UIColor.white
-        self.top.textColor = UIColor.black
+        
+        
+        self.top.textColor = self.colorManager.topLabelText
+        self.top.backgroundColor = self.colorManager.topBackground
+        self.top.layer.borderColor = self.colorManager.border.cgColor
+        
+        self.bottom.textColor = self.colorManager.bottomLabelText
+        self.bottom.backgroundColor = self.colorManager.bottomBackground
+        self.bottom.layer.borderColor = self.colorManager.border.cgColor
         
         self.bottom.layer.masksToBounds = true
         self.bottom.layer.cornerRadius = 8.0

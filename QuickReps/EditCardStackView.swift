@@ -11,13 +11,21 @@ import UIKit
 @IBDesignable
 class EditCardStackView: UIStackView {
 
-    var top: UITextView
-    var bottom: UITextView
+    var top: UITextViewX
+    var bottom: UITextViewX
+    let colorManager = ColorManager()
+    
+    static let topIdentifier = "top"
+    static let bottomIdentifier = "bottom"
+    static let topPlaceholderText = "Question / Reminder"
+    static let bottomPlaceholderText = "Answer"
     
     //MARK: Initialization
     override init(frame: CGRect) {
-        self.top = UITextView()
-        self.bottom = UITextView()
+        self.top = UITextViewX()
+        self.bottom = UITextViewX()
+        self.top.identifier = EditCardStackView.topIdentifier
+        self.bottom.identifier = EditCardStackView.bottomIdentifier
         
         super.init(frame: frame)
         
@@ -25,8 +33,10 @@ class EditCardStackView: UIStackView {
     }
     
     required init(coder: NSCoder) {
-        self.top = UITextView()
-        self.bottom = UITextView()
+        self.top = UITextViewX()
+        self.bottom = UITextViewX()
+        self.top.identifier = EditCardStackView.topIdentifier
+        self.bottom.identifier = EditCardStackView.bottomIdentifier
         
         super.init(coder: coder)
         
@@ -34,26 +44,29 @@ class EditCardStackView: UIStackView {
     }
     
     func setPlaceholder() {
-        self.top.text = "Question / Reminder"
-        self.top.textColor = UIColor.lightGray
-        self.bottom.text = "Answer"
-        self.bottom.textColor = UIColor.lightGray
+        self.top.isPlaceholder = true
+        self.bottom.isPlaceholder = true
+        self.top.text = EditCardStackView.topPlaceholderText
+        self.bottom.text = EditCardStackView.bottomPlaceholderText
+
+        self.top.textColor = self.colorManager.placeholderText
+        self.bottom.textColor = self.colorManager.placeholderText
     }
 
     //MARK: Private Methods
     private func setupView() {
         self.top.layer.masksToBounds = true
         self.top.layer.cornerRadius = 8.0
-        
-        self.top.layer.borderColor = UIColor.gray.cgColor
         self.top.layer.borderWidth = 1.0
         
-        self.top.backgroundColor = UIColor.white
-        self.top.textColor = UIColor.black
+        self.top.textColor = self.colorManager.topLabelText
+        self.top.backgroundColor = self.colorManager.topBackground
+        self.top.layer.borderColor = self.colorManager.border.cgColor
         
-        self.bottom.backgroundColor = UIColor.gray
-        self.bottom.textColor = UIColor.white
-        
+
+        self.bottom.textColor = self.colorManager.bottomLabelText
+        self.bottom.backgroundColor = self.colorManager.bottomBackground
+        self.bottom.layer.borderColor = self.colorManager.border.cgColor
         
         self.bottom.layer.masksToBounds = true
         self.bottom.layer.cornerRadius = 8.0

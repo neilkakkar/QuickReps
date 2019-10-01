@@ -15,24 +15,24 @@ class ViewController: UIViewController {
     var initialCardCenter: CGPoint?
     let cardDataController = CardDataController.shared
     var todaysQueue: Queue<Card>?
-    var currentCard: Card?
+    var dailyQueue: Queue<Card>?
+    var currentCard: Card = CardDataController.totalZeroCard
+    var isDailyQueue: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
         todaysQueue = cardDataController.getTodaysQueue()
-        if todaysQueue == nil {
-            currentCard = CardDataController.noNewDataCard
-        } else {
-            currentCard = todaysQueue!.dequeue()
-        }
+        dailyQueue = cardDataController.getDailyQueue()
+
+        view.backgroundColor = cardStackView.colorManager.topBackground
+        setupQueues()
+        setPageTitle()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if let cardData = currentCard {
-            cardStackView.resetViewWithNewData(cardData: cardData)
-        }
+        cardStackView.resetViewWithNewData(cardData: currentCard)
         super.viewWillAppear(animated)
     }
     
@@ -47,7 +47,9 @@ class ViewController: UIViewController {
     
     
     @IBAction func toggleMode(_ sender: UIBarButtonItem) {
-        
+        isDailyQueue = !isDailyQueue
+        setPageTitle()
+        setupQueues()
     }
     
     @IBAction func panCard(_ sender: UIPanGestureRecognizer) {
@@ -75,11 +77,14 @@ class ViewController: UIViewController {
                     card.alpha = 0
             },
                 completion: {(finished: Bool) in
-                    if self.currentCard!.cardType != Card.CardType.system {
-                        self.currentCard!.reps += 1
-                        self.cardDataController.setNextRevision(card: self.currentCard!, ease: 1)
-                        self.currentCard!.cardType = Card.CardType.revising
-                        self.todaysQueue?.enqueue(item: self.currentCard!)
+                    if ![Card.CardType.system, Card.CardType.daily].contains(self.currentCard.cardType) {
+                        self.currentCard.reps += 1
+                        self.cardDataController.setNextRevision(card: self.currentCard, ease: 1)
+                        self.currentCard.cardType = Card.CardType.revising
+                        self.todaysQueue!.enqueue(item: self.currentCard)
+                        let _ = self.todaysQueue!.dequeue()
+                    } else if self.currentCard.cardType == .daily {
+                        let _ = self.dailyQueue!.dequeue()
                     }
                     self.getNewCardData(card: card)
             })
@@ -91,10 +96,13 @@ class ViewController: UIViewController {
                     card.alpha = 0
             },
                 completion: {(finished: Bool) in
-                    if self.currentCard!.cardType != Card.CardType.system {
-                        self.currentCard!.reps += 1
-                        self.currentCard!.cardType = Card.CardType.learning
-                        self.cardDataController.setNextRevision(card: self.currentCard!, ease: 4)
+                    if ![Card.CardType.system, Card.CardType.daily].contains(self.currentCard.cardType) {
+                        self.currentCard.reps += 1
+                        self.currentCard.cardType = Card.CardType.learning
+                        self.cardDataController.setNextRevision(card: self.currentCard, ease: 4)
+                        let _ = self.todaysQueue!.dequeue()
+                    } else if self.currentCard.cardType == .daily {
+                        let _ = self.dailyQueue!.dequeue()
                     }
                     self.getNewCardData(card: card)
             })
@@ -122,23 +130,78 @@ class ViewController: UIViewController {
         }
         card.center = cardCenter
         
-        if let newCard = todaysQueue?.dequeue() {
-            card.resetViewWithNewData(cardData: newCard)
-            self.currentCard = newCard
-        } else {
-            if let newQueue = cardDataController.getTodaysQueue() {
-                todaysQueue = newQueue
-                card.resetViewWithNewData(cardData: CardDataController.refreshQueueDataCard)
-                self.currentCard = CardDataController.refreshQueueDataCard
+        if isDailyQueue {
+            if let newCard = dailyQueue!.top() {
+                card.resetViewWithNewData(cardData: newCard)
+                self.currentCard = newCard
             } else {
-                card.resetViewWithNewData(cardData: CardDataController.noNewDataCard)
-                self.currentCard = CardDataController.noNewDataCard
+                let newQueue = cardDataController.getDailyQueue()
+                if !newQueue.isEmpty() {
+                    dailyQueue = newQueue
+                    card.resetViewWithNewData(cardData: CardDataController.refreshDailyQueueDataCard)
+                    self.currentCard = CardDataController.refreshQueueDataCard
+                } else {
+                    card.resetViewWithNewData(cardData: CardDataController.noNewDataCard)
+                    self.currentCard = CardDataController.noNewDataCard
+                }
+            }
+        } else {
+            if let newCard = todaysQueue!.top() {
+                card.resetViewWithNewData(cardData: newCard)
+                self.currentCard = newCard
+            } else {
+                let newQueue = cardDataController.getTodaysQueue()
+                if !newQueue.isEmpty() {
+                    todaysQueue = newQueue
+                    card.resetViewWithNewData(cardData: CardDataController.refreshQueueDataCard)
+                    self.currentCard = CardDataController.refreshQueueDataCard
+                } else {
+                    card.resetViewWithNewData(cardData: CardDataController.noNewDataCard)
+                    self.currentCard = CardDataController.noNewDataCard
+                }
             }
         }
         UIView.animate(withDuration: 0.2) {
             card.alpha = 1
         }
         self.initialCardCenter = nil
+    }
+    
+    private func setPageTitle() {
+        self.navigationItem.title = self.isDailyQueue ? "Reminder Mode" : "Normal Mode"
+    }
+    
+    private func setupQueues() {
+        if isDailyQueue {
+            if dailyQueue!.isEmpty() {
+                dailyQueue = cardDataController.getDailyQueue()
+                if  dailyQueue!.isEmpty() {
+                    currentCard = CardDataController.noNewDataCard
+                } else {
+                    currentCard = dailyQueue!.top()!
+                }
+            } else {
+                currentCard = dailyQueue!.top()!
+            }
+        } else {
+            if todaysQueue!.isEmpty() {
+                todaysQueue = cardDataController.getTodaysQueue()
+                if todaysQueue!.isEmpty() {
+                    currentCard = CardDataController.noNewDataCard
+                } else {
+                    currentCard = todaysQueue!.top()!
+                }
+            } else {
+                currentCard = todaysQueue!.top()!
+            }
+        }
+        UIView.animate(withDuration: 0.2, animations: {
+            self.cardStackView.alpha = 0}, completion: {(completion: Bool) in
+                self.cardStackView.resetViewWithNewData(cardData: self.currentCard)
+                UIView.animate(withDuration: 0.2) {
+                    self.cardStackView.alpha = 1
+                }
+        })
     }
 }
 

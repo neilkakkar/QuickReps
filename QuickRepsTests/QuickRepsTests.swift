@@ -61,6 +61,13 @@ class QuickRepsTests: XCTestCase {
         //empty list test
         queue += []
         XCTAssert(queue.isEmpty())
+        
+        queue.enqueue(item: 2)
+        XCTAssert(queue.top() == 2)
+        
+        let _ = queue.dequeue()
+        XCTAssert(queue.top() == nil)
+
     }
 
     func testPerformanceExample() {

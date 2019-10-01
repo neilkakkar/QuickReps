@@ -28,6 +28,8 @@ class EditCardViewController: UIViewController, UITextViewDelegate {
         editCardView.top.delegate = self
         editCardView.bottom.delegate = self
 
+        view.backgroundColor = editCardView.colorManager.topBackground
+        
         if let card = card {
             editCardView.top.text = card.top
             editCardView.bottom.text = card.bottom
@@ -43,31 +45,36 @@ class EditCardViewController: UIViewController, UITextViewDelegate {
     //MARK: UITextViewDelegate
     func textViewDidEndEditing(_ textView: UITextView) {
         textView.resignFirstResponder()
-        updateSaveButtonState()
-        
+
         dump(textView.backgroundColor)
         //TK BUG: With iOS 13 and dark mode, gotta figure this out. UIDynamicSystemColor vs UIColor
+        let textViewX = textView as! UITextViewX
+        
         if textView.text.isEmpty {
-            if textView.backgroundColor == UIColor.white {
-                textView.text = "Question / Reminder"
-                textView.textColor = UIColor.lightGray
+            if textViewX.identifier == EditCardStackView.topIdentifier {
+                textViewX.text = "Question / Reminder"
+                textView.textColor = editCardView.colorManager.placeholderText
             } else {
                 textView.text = "Answer"
-                textView.textColor = UIColor.lightGray
+                textView.textColor = editCardView.colorManager.placeholderText
             }
+            textViewX.isPlaceholder = true
+        } else {
+            textViewX.isPlaceholder = false
         }
-    
+        updateSaveButtonState()
+
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == UIColor.lightGray {
-            if textView.backgroundColor == UIColor.white {
-                textView.text = ""
-                textView.textColor = UIColor.black
+        let textViewX = textView as! UITextViewX
+        if textViewX.isPlaceholder {
+            if textViewX.identifier == EditCardStackView.topIdentifier {
+                textView.textColor = editCardView.colorManager.topLabelText
             } else {
-                textView.text = ""
-                textView.textColor = UIColor.white
+                textView.textColor = editCardView.colorManager.bottomLabelText
             }
+            textView.text = ""
         }
     }
     
@@ -75,8 +82,8 @@ class EditCardViewController: UIViewController, UITextViewDelegate {
         let topText = editCardView.top.text ?? ""
         let bottomText = editCardView.bottom.text ?? ""
         
-        let topTextIsPlaceholder = editCardView.top.textColor == UIColor.lightGray
-        let bottomTextIsPlaceholder = editCardView.bottom.textColor == UIColor.lightGray
+        let topTextIsPlaceholder = editCardView.top.isPlaceholder
+        let bottomTextIsPlaceholder = editCardView.bottom.isPlaceholder
         saveButton.isEnabled = !(topText.isEmpty || bottomText.isEmpty || topTextIsPlaceholder || bottomTextIsPlaceholder)
     }
     

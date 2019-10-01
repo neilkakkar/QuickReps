@@ -18,6 +18,7 @@ class CardDataController {
     static let noNewDataCard = Card.createSystemCard(top: "No more cards today", bottom: "Great job!")
     static let refreshQueueDataCard = Card.createSystemCard(top: "Getting more cards for today", bottom: "Good going!")
     static let totalZeroCard = Card.createSystemCard(top: "Add a new card to begin", bottom: "No cards exist, yet.")
+    static let refreshDailyQueueDataCard = Card.createSystemCard(top: "Refreshing daily reminder queue", bottom: "Swipe to refresh")
     var tutorialQueue: Queue<Card>
     
     //MARK: Archiving Paths
@@ -42,17 +43,13 @@ class CardDataController {
         setupTutorialQueue()
     }
     
-    func getDailyQueue() -> Queue<Card>? {
+    func getDailyQueue() -> Queue<Card> {
         var dailyQueue = Queue<Card>()
         dailyQueue += dailyCards
-        
-        if dailyQueue.isEmpty() {
-            return nil
-        }
         return dailyQueue
     }
     
-    func getTodaysQueue() -> Queue<Card>? {
+    func getTodaysQueue() -> Queue<Card> {
         if UserManager.shared.getFirstLaunch() {
             return tutorialQueue
         }
@@ -70,10 +67,6 @@ class CardDataController {
                     break
                 }
             }
-        }
-        
-        if todaysQueue.isEmpty() {
-            return nil
         }
         return todaysQueue
     }
@@ -103,10 +96,10 @@ class CardDataController {
         }
 
         if ease < 3 {
-            card.interval = 1*24*60 // 1 day
+            card.interval = Card.Time.oneDay
             card.cardType = Card.CardType.revising
-        } else if card.interval == 1*24*60 {
-            card.interval = 6*24*60 // 6 days
+        } else if card.interval.isEqual(to: Card.Time.oneDay) {
+            card.interval = Card.Time.oneDay*6 // 6 days
         } else {
             let newInterval = ceil(card.interval * card.easinessFactor)
             card.interval = newInterval

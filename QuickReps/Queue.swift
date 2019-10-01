@@ -62,8 +62,15 @@ struct Queue<T> {
         return nil
     }
     
-    func isEmpty() -> Bool{
+    func isEmpty() -> Bool {
         return head == nil
+    }
+    
+    func top() -> T? {
+        if isEmpty() {
+            return nil
+        }
+        return head.value
     }
     
 }

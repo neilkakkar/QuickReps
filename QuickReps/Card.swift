@@ -34,6 +34,13 @@ class Card: NSObject, NSCoding {
         static let cardType = "cardType"
     }
     
+    struct Time {
+        // in seconds
+        static let oneDay: TimeInterval = 24*60*60
+        static let oneMinute: TimeInterval = 60
+        static let oneHour: TimeInterval = 60*60
+    }
+    
     enum CardType: Int {
         case system = 0, new, learning, revising, daily
         // system = system generated cards
@@ -54,7 +61,7 @@ class Card: NSObject, NSCoding {
         self.top = top
         self.bottom = bottom
         self.dueDate = Date()
-        self.interval = 1*24*60 // 1 day
+        self.interval = Card.Time.oneDay
         self.easinessFactor = 2.5
         self.reps = 0
         self.cardType = CardType.new
