@@ -27,6 +27,13 @@ class CardTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        setButtonColors()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        setButtonColors()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -191,5 +198,9 @@ class CardTableViewController: UITableViewController {
     private func updateCardWithSectionChange(_ tableView: UITableView, card: Card, from: IndexPath) {
         deleteCard(tableView, at: from)
         addCard(tableView, card: card)
+    }
+    
+    private func setButtonColors() {
+        navigationController?.navigationBar.tintColor = ColorManager.shared.buttonTint
     }
 }

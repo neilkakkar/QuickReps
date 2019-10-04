@@ -37,13 +37,13 @@
                                 </constraints>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="FHz-DZ-rRH"/>
-                                    <barButtonItem systemItem="add" id="6gd-0z-H0x">
+                                    <barButtonItem title="Item" image="addIcon2" id="6gd-0z-H0x">
                                         <connections>
                                             <action selector="addNewCard:" destination="BYZ-38-t0r" id="eHz-kG-Pb9"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="wIp-Ie-wHy"/>
-                                    <barButtonItem title="Normal" id="Ojw-Ku-JaH">
+                                    <barButtonItem image="option2" id="Ojw-Ku-JaH">
                                         <connections>
                                             <action selector="toggleMode:" destination="BYZ-38-t0r" id="5ZP-lk-MN3"/>
                                         </connections>
@@ -67,7 +67,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="QuickReps" id="Aqa-sW-liq">
-                        <barButtonItem key="rightBarButtonItem" systemItem="organize" id="Ufj-Vy-gIk">
+                        <barButtonItem key="rightBarButtonItem" image="browseIcon" id="Ufj-Vy-gIk">
                             <connections>
                                 <segue destination="yQh-7k-V9l" kind="show" id="hL5-v0-37d"/>
                             </connections>
@@ -75,6 +75,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="cardStackView" destination="mMv-zU-xqc" id="qFD-si-vwz"/>
+                        <outlet property="toolbar" destination="RID-46-0XB" id="FRc-DP-ls6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -124,7 +125,7 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="FjK-e2-V4p">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="sd6-Om-fFT">
+                        <barButtonItem key="rightBarButtonItem" image="addIcon2" id="sd6-Om-fFT">
                             <connections>
                                 <segue destination="syo-4I-EbI" kind="presentation" identifier="addCard" id="4RP-7b-MoD"/>
                             </connections>
@@ -241,6 +242,11 @@
             <point key="canvasLocation" x="3233" y="529"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="addIcon2" width="32" height="32"/>
+        <image name="browseIcon" width="32" height="32"/>
+        <image name="option2" width="32" height="32"/>
+    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="vFr-QP-xI4"/>
     </inferredMetricsTieBreakers>

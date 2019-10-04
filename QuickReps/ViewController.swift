@@ -12,12 +12,15 @@ class ViewController: UIViewController {
     
     //MARK: Properties
     @IBOutlet weak var cardStackView: CardStackView!
+    @IBOutlet weak var toolbar: UIToolbar!
+
     var initialCardCenter: CGPoint?
     let cardDataController = CardDataController.shared
     var todaysQueue: Queue<Card>?
     var dailyQueue: Queue<Card>?
     var currentCard: Card = CardDataController.totalZeroCard
     var isDailyQueue: Bool = false
+    let colorManager = ColorManager.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,9 +29,11 @@ class ViewController: UIViewController {
         todaysQueue = cardDataController.getTodaysQueue()
         dailyQueue = cardDataController.getDailyQueue()
 
-        view.backgroundColor = cardStackView.colorManager.topBackground
+        view.backgroundColor = colorManager.topBackground
         setupQueues()
         setPageTitle()
+        
+        setButtonColors()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -36,6 +41,9 @@ class ViewController: UIViewController {
         super.viewWillAppear(animated)
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        setButtonColors()
+    }
     
     @IBAction func addNewCard(_ sender: UIBarButtonItem) {
         let cardTableViewController = self.storyboard?.instantiateViewController(withIdentifier: "CardTableViewController") as! CardTableViewController
@@ -203,5 +211,11 @@ class ViewController: UIViewController {
                 }
         })
     }
+    
+    private func setButtonColors() {
+        navigationController?.navigationBar.tintColor = colorManager.buttonTint
+        for item in toolbar.items! {
+            item.tintColor = colorManager.buttonTint
+        }
+    }
 }
-

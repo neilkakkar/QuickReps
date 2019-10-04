@@ -42,7 +42,7 @@ class Card: NSObject, NSCoding {
     }
     
     enum CardType: Int {
-        case system = 0, new, learning, revising, daily
+        case system = 0, new, learning, revising, daily, tutorial
         // system = system generated cards
         // new = new card
         // learning = regular queue
@@ -53,6 +53,12 @@ class Card: NSObject, NSCoding {
     static func createSystemCard(top: String, bottom: String) -> Card {
         let card = Card(top: top, bottom: bottom)
         card.cardType = CardType.system
+        return card
+    }
+    
+    static func createTutorialCard(top: String, bottom: String) -> Card {
+        let card = Card(top: top, bottom: bottom)
+        card.cardType = CardType.tutorial
         return card
     }
     

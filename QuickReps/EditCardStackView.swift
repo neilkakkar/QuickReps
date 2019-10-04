@@ -13,7 +13,7 @@ class EditCardStackView: UIStackView {
 
     var top: UITextViewX
     var bottom: UITextViewX
-    let colorManager = ColorManager()
+    let colorManager = ColorManager.shared
     
     static let topIdentifier = "top"
     static let bottomIdentifier = "bottom"

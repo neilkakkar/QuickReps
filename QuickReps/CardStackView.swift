@@ -15,7 +15,7 @@ class CardStackView: UIStackView {
     var top: UILabelX
     var bottom: UILabelX
     var cardData: Card = Card(top: "Tap card to reveal answer", bottom: "Swipe left if you don't remember, right if you do.")
-    let colorManager = ColorManager()
+    let colorManager = ColorManager.shared
     
     //MARK: Initialization
     override init(frame: CGRect) {

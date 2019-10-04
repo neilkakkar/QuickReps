@@ -172,12 +172,12 @@ class CardDataController {
     }
     
     func setupTutorialQueue() {
-        let step1 = Card.createSystemCard(top: "Welcome to QuickReps.\n Tap this card!", bottom: "This is the core activity. We'll be doing a lot of tapping and swiping.\n Speaking of, go ahead and swipe: left or right.")
-        let step2 = Card.createSystemCard(top: "Generally, this card is for a question you're trying to recollect", bottom: "This place is where the answer shows up.")
-        let step3 = Card.createSystemCard(top: "What's the swiping for?", bottom: "Well, a right swipe means you remember the answer, while a left swipe means you don't.")
-        let step4 = Card.createSystemCard(top: "In either case, it's okay. Do you know what's the goal here?", bottom: "To help you learn better.\n A left swiped card shows up more frequently than a right swiped card.")
-        let step5 = Card.createSystemCard(top: "Curious to know more?", bottom: "Check out www.<a cheap domain name when I find it>.com")
-        let step6 = Card.createSystemCard(top: "For now, let's get started.\n How to add more cards?", bottom: "Press the button on the top-right corner, and then the +")
+        let step1 = Card.createTutorialCard(top: "Welcome to QuickReps.\n Tap this card!", bottom: "This is the core activity. We'll be doing a lot of tapping and swiping.\n Speaking of, go ahead and swipe: left or right.")
+        let step2 = Card.createTutorialCard(top: "Generally, this card is for a question you're trying to recollect", bottom: "This place is where the answer shows up.")
+        let step3 = Card.createTutorialCard(top: "What's the swiping for?", bottom: "Well, a right swipe means you remember the answer, while a left swipe means you don't.")
+        let step4 = Card.createTutorialCard(top: "In either case, it's okay. Do you know what's the goal here?", bottom: "To help you learn better.\n A left swiped card shows up more frequently than a right swiped card.")
+        let step5 = Card.createTutorialCard(top: "Curious to know more?", bottom: "Check out www.<a cheap domain name when I find it>.com")
+        let step6 = Card.createTutorialCard(top: "For now, let's get started.\n How to add more cards?", bottom: "Press the + button below")
         tutorialQueue = Queue<Card>()
         tutorialQueue += [step1, step2, step3, step4, step5, step6]
     }
@@ -197,11 +197,10 @@ class CardDataController {
         if !cards.isEmpty {
             return
         }
-        let card1 = Card(top: "top", bottom: "bottom")
-        let card2 = Card(top: "up", bottom: "down")
-        let card3 = Card(top: "Something useful? or just super super super looong! What now, iOS!?", bottom: "No")
-        
-        self.cards += [card1, card2, card3]
+        let card1 = Card(top: "Here's an example. What's the best way to get things into long term memory?", bottom: "Spaced Repetition.")
+        let card2 = Card(top: "Why does Spaced Repetition work so well for memory?", bottom: "because it figures out the most optimal time to remember something: right before you forget it.")
+
+        self.cards += [card1, card2]
     }
     
     private func loadCards() -> [Card]? {

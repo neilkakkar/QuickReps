@@ -8,10 +8,12 @@
 
 import UIKit
 import os.log
+import IQKeyboardManagerSwift
 
 class EditCardViewController: UIViewController, UITextViewDelegate {
 
     var card: Card?
+    let colorManager = ColorManager.shared
     
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var saveButton: UIBarButtonItem!
@@ -40,6 +42,11 @@ class EditCardViewController: UIViewController, UITextViewDelegate {
         }
 
         updateSaveButtonState()
+        setButtonColors()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        setButtonColors()
     }
     
     //MARK: UITextViewDelegate
@@ -67,6 +74,8 @@ class EditCardViewController: UIViewController, UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
+        IQKeyboardManager.shared.toolbarTintColor = ColorManager.shared.buttonTint
+        
         let textViewX = textView as! UITextViewX
         if textViewX.isPlaceholder {
             if textViewX.identifier == EditCardStackView.topIdentifier {
@@ -136,5 +145,10 @@ class EditCardViewController: UIViewController, UITextViewDelegate {
     }
     private func isDailyCard() -> Bool {
         return getDailySwitch().isOn
+    }
+    
+    private func setButtonColors() {
+        navigationController?.navigationBar.tintColor = colorManager.buttonTint
+        IQKeyboardManager.shared.toolbarTintColor = colorManager.buttonTint
     }
 }

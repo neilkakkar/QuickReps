@@ -19,8 +19,11 @@ class ColorManager {
     let placeholderText: UIColor
     let border: UIColor
     
+    let buttonTint: UIColor
     
-    init() {
+    static let shared = ColorManager()
+
+    private init() {
         if #available(iOS 13.0, *) {
             topLabelText = UIColor.label
             bottomLabelText = UIColor.white
@@ -31,7 +34,10 @@ class ColorManager {
             placeholderText = UIColor.placeholderText
             border = UIColor.opaqueSeparator
             
+            buttonTint = UIColor(named: "ButtonTint")!
+            
         } else {
+            // No Dark mode
             topLabelText = UIColor.black
             bottomLabelText = UIColor.white
             
@@ -40,6 +46,8 @@ class ColorManager {
             
             placeholderText = UIColor.lightGray
             border = UIColor.gray
+            
+            buttonTint = UIColor.blue
         }
     }
 }

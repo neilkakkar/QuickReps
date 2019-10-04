@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         let _ = CardDataController.shared // begin loading data
         IQKeyboardManager.shared.enable = true
+        IQKeyboardManager.shared.toolbarTintColor = ColorManager.shared.buttonTint
         return true
     }
 

@@ -632,7 +632,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 911819161E95DF52B80487F6 /* Pods-QuickReps.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = appIcon2;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 756FRAXTT8;
 				INFOPLIST_FILE = QuickReps/Info.plist;
@@ -651,7 +651,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BF355E7841F451025D746FF5 /* Pods-QuickReps.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = appIcon2;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 756FRAXTT8;
 				INFOPLIST_FILE = QuickReps/Info.plist;
