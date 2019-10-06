@@ -39,6 +39,7 @@ class Card: NSObject, NSCoding {
         static let oneDay: TimeInterval = 24*60*60
         static let oneMinute: TimeInterval = 60
         static let oneHour: TimeInterval = 60*60
+        static let oneYear: TimeInterval = 24*60*60*365
     }
     
     enum CardType: Int {

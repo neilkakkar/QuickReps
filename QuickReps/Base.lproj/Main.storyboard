@@ -16,16 +16,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6Ap-G9-qu9">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <gestureRecognizers/>
-                            </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="mMv-zU-xqc" userLabel="CardStackView" customClass="CardStackView" customModule="QuickReps" customModuleProvider="target">
                                 <rect key="frame" x="30" y="84" width="260" height="400"/>
                                 <gestureRecognizers/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="400" id="xNs-9G-Yy8"/>
-                                </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="fhb-Xe-PB2" appends="YES" id="b9Q-fB-acE"/>
                                 </connections>
@@ -53,13 +46,10 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6Ap-G9-qu9" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="4Hl-C2-mMs"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6Ap-G9-qu9" secondAttribute="trailing" id="9mo-ZD-XTP"/>
+                            <constraint firstItem="RID-46-0XB" firstAttribute="top" secondItem="mMv-zU-xqc" secondAttribute="bottom" constant="30" id="1X4-PP-MNC"/>
                             <constraint firstItem="RID-46-0XB" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Fqw-gS-U0o"/>
-                            <constraint firstItem="mMv-zU-xqc" firstAttribute="centerY" secondItem="6Ap-G9-qu9" secondAttribute="centerY" id="IRq-fp-xu3"/>
+                            <constraint firstItem="mMv-zU-xqc" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="30" id="JQa-H1-gQa"/>
                             <constraint firstItem="mMv-zU-xqc" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="MoU-A0-laW"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="6Ap-G9-qu9" secondAttribute="bottom" id="Vhd-Sy-oM9"/>
-                            <constraint firstItem="6Ap-G9-qu9" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ZTy-71-ZxR"/>
                             <constraint firstItem="RID-46-0XB" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="hfe-Xc-JBg"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="RID-46-0XB" secondAttribute="bottom" id="lGf-C7-fvI"/>
                             <constraint firstItem="mMv-zU-xqc" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="30" id="vpj-d9-y2l"/>
@@ -148,9 +138,6 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="IcW-oz-FIl" userLabel="CardStackView" customClass="EditCardStackView" customModule="QuickReps" customModuleProvider="target">
                                 <rect key="frame" x="30" y="51.5" width="260" height="400"/>
                                 <gestureRecognizers/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="400" id="Ypb-bn-ASE"/>
-                                </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="92" translatesAutoresizingMaskIntoConstraints="NO" id="CEC-lT-10J">
                                 <rect key="frame" x="32" y="471.5" width="256" height="40"/>
@@ -173,11 +160,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="CtI-zi-nLz" firstAttribute="bottom" secondItem="CEC-lT-10J" secondAttribute="bottom" constant="10" id="33D-fe-jPr"/>
                             <constraint firstItem="CEC-lT-10J" firstAttribute="top" secondItem="IcW-oz-FIl" secondAttribute="bottom" constant="20" id="JI8-Pb-tc2"/>
                             <constraint firstItem="CEC-lT-10J" firstAttribute="centerX" secondItem="IcW-oz-FIl" secondAttribute="centerX" id="LhT-9T-xMy"/>
                             <constraint firstItem="IcW-oz-FIl" firstAttribute="centerY" secondItem="CtI-zi-nLz" secondAttribute="centerY" constant="-30" id="iED-2n-Cuk"/>
                             <constraint firstItem="IcW-oz-FIl" firstAttribute="centerX" secondItem="CtI-zi-nLz" secondAttribute="centerX" id="n0L-NC-lRM"/>
                             <constraint firstItem="IcW-oz-FIl" firstAttribute="leading" secondItem="CtI-zi-nLz" secondAttribute="leading" constant="30" id="uK4-Vq-Qli"/>
+                            <constraint firstItem="IcW-oz-FIl" firstAttribute="top" secondItem="CtI-zi-nLz" secondAttribute="top" constant="10" id="xpS-Dk-I0g"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="CtI-zi-nLz"/>
                     </view>

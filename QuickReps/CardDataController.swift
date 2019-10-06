@@ -101,13 +101,15 @@ class CardDataController {
         } else if card.interval.isEqual(to: Card.Time.oneDay) {
             card.interval = Card.Time.oneDay*6 // 6 days
         } else {
-            let newInterval = ceil(card.interval * card.easinessFactor)
+            let newInterval = min(Card.Time.oneYear, ceil(card.interval * card.easinessFactor))
             card.interval = newInterval
-            let addend = createNewAddend(ease)
-            let newEasinessFactor = card.easinessFactor + addend
-            card.easinessFactor = newEasinessFactor
-            card.easinessFactor = max(1.3, card.easinessFactor)
         }
+
+        let addend = createNewAddend(ease)
+        let newEasinessFactor = card.easinessFactor + addend
+        card.easinessFactor = newEasinessFactor
+        card.easinessFactor = max(1.3, card.easinessFactor)
+    
         card.dueDate = Date(timeIntervalSinceNow: card.interval)
         dump(card)
     }
@@ -176,10 +178,26 @@ class CardDataController {
         let step2 = Card.createTutorialCard(top: "Generally, this card is for a question you're trying to recollect", bottom: "This place is where the answer shows up.")
         let step3 = Card.createTutorialCard(top: "What's the swiping for?", bottom: "Well, a right swipe means you remember the answer, while a left swipe means you don't.")
         let step4 = Card.createTutorialCard(top: "In either case, it's okay. Do you know what's the goal here?", bottom: "To help you learn better.\n A left swiped card shows up more frequently than a right swiped card.")
-        let step5 = Card.createTutorialCard(top: "Curious to know more?", bottom: "Check out www.<a cheap domain name when I find it>.com")
-        let step6 = Card.createTutorialCard(top: "For now, let's get started.\n How to add more cards?", bottom: "Press the + button below")
+        let step5 = Card.createTutorialCard(top: "For now, let's get started.\n How to add more cards?", bottom: "Press the + button below")
+        let step6 = Card.createTutorialCard(top: "There's two kinds of cards.", bottom: "The normal cards follow the most optimal schedule, while the reminder cards are shown everyday. These are excellent for building habits of mind. Switch modes by pressing the bottom right button.")
+        let step7 = Card.createTutorialCard(top: "Curious to know more?", bottom: "Check out www.<a cheap domain name when I find it>.com")
+        
         tutorialQueue = Queue<Card>()
         tutorialQueue += [step1, step2, step3, step4, step5, step6]
+    }
+    
+    func loadCards() -> [Card]? {
+        guard let codedData = try? Data(contentsOf: CardDataController.ArchiveURL) else { return nil }
+        
+        let cards = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(codedData) as? [Card]
+        return cards
+    }
+    
+    func loadDailyCards() -> [Card]? {
+        guard let codedData = try? Data(contentsOf: CardDataController.DailyArchiveURL) else { return nil }
+        
+        let cards = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(codedData) as? [Card]
+        return cards
     }
     
     //MARK: Private
@@ -201,20 +219,5 @@ class CardDataController {
         let card2 = Card(top: "Why does Spaced Repetition work so well for memory?", bottom: "because it figures out the most optimal time to remember something: right before you forget it.")
 
         self.cards += [card1, card2]
-    }
-    
-    private func loadCards() -> [Card]? {
-        print(CardDataController.ArchiveURL.absoluteString)
-        guard let codedData = try? Data(contentsOf: CardDataController.ArchiveURL) else { return nil }
-        
-        let cards = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(codedData) as? [Card]
-        return cards
-    }
-    
-    private func loadDailyCards() -> [Card]? {
-        guard let codedData = try? Data(contentsOf: CardDataController.DailyArchiveURL) else { return nil }
-        
-        let cards = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(codedData) as? [Card]
-        return cards
     }
 }

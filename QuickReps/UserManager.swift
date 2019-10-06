@@ -14,11 +14,14 @@ class UserManager {
     static let shared = UserManager()
     var dailyLimitDefault = 20
     
+    private let LAUNCH_KEY = "launchedBefore"
+    private let DAILY_LIMIT_KEY = "dailyCardLimit"
+
     private init() {
+        
     }
     
     func getFirstLaunch() -> Bool {
-        let LAUNCH_KEY = "launchedBefore"
         let launchedBefore = UserDefaults.standard.bool(forKey: LAUNCH_KEY)
         if launchedBefore {
             return false
@@ -28,8 +31,11 @@ class UserManager {
         }
     }
     
+    func setFirstLaunch() {
+        UserDefaults.standard.set(false, forKey: LAUNCH_KEY)
+    }
+    
     func getDailyLimit() -> Int {
-        let DAILY_LIMIT_KEY = "dailyCardLimit"
         let dailyLimit = UserDefaults.standard.integer(forKey: DAILY_LIMIT_KEY)
         if dailyLimit != 0 {
             return dailyLimit

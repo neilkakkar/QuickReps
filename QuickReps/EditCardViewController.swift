@@ -53,8 +53,6 @@ class EditCardViewController: UIViewController, UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         textView.resignFirstResponder()
 
-        dump(textView.backgroundColor)
-        //TK BUG: With iOS 13 and dark mode, gotta figure this out. UIDynamicSystemColor vs UIColor
         let textViewX = textView as! UITextViewX
         
         if textView.text.isEmpty {
@@ -143,6 +141,7 @@ class EditCardViewController: UIViewController, UITextViewDelegate {
     private func getDailySwitch() -> UISwitch {
         return dailyStackView.arrangedSubviews[1] as! UISwitch
     }
+
     private func isDailyCard() -> Bool {
         return getDailySwitch().isOn
     }
@@ -150,5 +149,7 @@ class EditCardViewController: UIViewController, UITextViewDelegate {
     private func setButtonColors() {
         navigationController?.navigationBar.tintColor = colorManager.buttonTint
         IQKeyboardManager.shared.toolbarTintColor = colorManager.buttonTint
+        
+        self.getDailySwitch().onTintColor = colorManager.buttonTint
     }
 }

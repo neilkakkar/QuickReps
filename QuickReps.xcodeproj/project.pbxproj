@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		076906FB0BB72B5FEC5E29A9 /* Pods_QuickRepsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EED3C30D15E4AE2CB695EB31 /* Pods_QuickRepsTests.framework */; };
 		A408A3A96A9C95DE6F17F21A /* Pods_QuickReps_QuickRepsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FB0ACEFE4432A797797489B /* Pods_QuickReps_QuickRepsUITests.framework */; };
+		AD20CC6A234A2AB8007FFD17 /* CardDataControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD20CC69234A2AB8007FFD17 /* CardDataControllerTests.swift */; };
 		AD44895C233648E2009FBB98 /* CardDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD44895B233648E2009FBB98 /* CardDataController.swift */; };
 		AD474066233E8F22003F455C /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD474065233E8F22003F455C /* Queue.swift */; };
 		AD474068233E9AF9003F455C /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD474067233E9AF9003F455C /* UserManager.swift */; };
@@ -55,6 +56,7 @@
 		911819161E95DF52B80487F6 /* Pods-QuickReps.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuickReps.debug.xcconfig"; path = "Target Support Files/Pods-QuickReps/Pods-QuickReps.debug.xcconfig"; sourceTree = "<group>"; };
 		9FB0ACEFE4432A797797489B /* Pods_QuickReps_QuickRepsUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuickReps_QuickRepsUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA70B54C38DD98A214BB100F /* Pods-QuickRepsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuickRepsTests.release.xcconfig"; path = "Target Support Files/Pods-QuickRepsTests/Pods-QuickRepsTests.release.xcconfig"; sourceTree = "<group>"; };
+		AD20CC69234A2AB8007FFD17 /* CardDataControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDataControllerTests.swift; sourceTree = "<group>"; };
 		AD44895B233648E2009FBB98 /* CardDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDataController.swift; sourceTree = "<group>"; };
 		AD474065233E8F22003F455C /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		AD474067233E9AF9003F455C /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				ADE6CF2B231C09F600BC793E /* QuickRepsTests.swift */,
+				AD20CC69234A2AB8007FFD17 /* CardDataControllerTests.swift */,
 				ADE6CF2D231C09F600BC793E /* Info.plist */,
 			);
 			path = QuickRepsTests;
@@ -466,6 +469,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ADE6CF2C231C09F600BC793E /* QuickRepsTests.swift in Sources */,
+				AD20CC6A234A2AB8007FFD17 /* CardDataControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -563,7 +567,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -618,7 +622,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -636,6 +640,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 756FRAXTT8;
 				INFOPLIST_FILE = QuickReps/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -655,6 +660,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 756FRAXTT8;
 				INFOPLIST_FILE = QuickReps/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

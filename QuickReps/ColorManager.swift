@@ -29,12 +29,12 @@ class ColorManager {
             bottomLabelText = UIColor.white
             
             topBackground = UIColor.systemBackground
-            bottomBackground = UIColor.systemGray
+            bottomBackground = UIColor(named: "Blue2B")!
             
             placeholderText = UIColor.placeholderText
-            border = UIColor.opaqueSeparator
+            border = UIColor(named: "Blue2")!
             
-            buttonTint = UIColor(named: "ButtonTint")!
+            buttonTint = UIColor(named: "Blue3")!
             
         } else {
             // No Dark mode
@@ -42,12 +42,12 @@ class ColorManager {
             bottomLabelText = UIColor.white
             
             topBackground = UIColor.white
-            bottomBackground = UIColor.gray
+            bottomBackground = UIColor(named: "Blue2B")!
             
             placeholderText = UIColor.lightGray
-            border = UIColor.gray
+            border = UIColor(named: "Blue2")!
             
-            buttonTint = UIColor.blue
+            buttonTint = UIColor(named: "Blue3")!
         }
     }
 }

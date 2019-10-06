@@ -22,6 +22,9 @@ class ViewController: UIViewController {
     var isDailyQueue: Bool = false
     let colorManager = ColorManager.shared
     
+    // card margin properties
+    var swipeSafeLimit: CGFloat = 75
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -34,6 +37,8 @@ class ViewController: UIViewController {
         setPageTitle()
         
         setButtonColors()
+        
+        swipeSafeLimit = self.view.frame.width/3
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,6 +48,12 @@ class ViewController: UIViewController {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         setButtonColors()
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        swipeSafeLimit = size.width/3
     }
     
     @IBAction func addNewCard(_ sender: UIBarButtonItem) {
@@ -77,7 +88,7 @@ class ViewController: UIViewController {
     
     //MARK: Private Methods
     private func resetOrRemoveCard(card: CardStackView) {
-        if card.center.x < 75 {
+        if card.center.x < swipeSafeLimit {
             UIView.animate(
                 withDuration: 0.3,
                 animations: {
@@ -90,13 +101,18 @@ class ViewController: UIViewController {
                         self.cardDataController.setNextRevision(card: self.currentCard, ease: 1)
                         self.currentCard.cardType = Card.CardType.revising
                         self.todaysQueue!.enqueue(item: self.currentCard)
-                        let _ = self.todaysQueue!.dequeue()
-                    } else if self.currentCard.cardType == .daily {
+                    }
+                    
+                    if self.currentCard == self.dailyQueue?.top() {
+                        // this and below case for when type is changed in table view but viewController's queue still has the reference to the card. In this case a daily card will end up in today's Queue, or a regular card will end up in the daily queue (and won't be able to dequeue).
+                        // Using this way uniformly means every appropriate card would be dequeued, nothing else.
                         let _ = self.dailyQueue!.dequeue()
+                    } else if self.currentCard == self.todaysQueue?.top() {
+                        let _ = self.todaysQueue!.dequeue()
                     }
                     self.getNewCardData(card: card)
             })
-        } else if card.center.x > self.view.frame.width - 75 {
+        } else if card.center.x > self.view.frame.width - swipeSafeLimit {
             UIView.animate(
                 withDuration: 0.3,
                 animations: {
@@ -108,9 +124,14 @@ class ViewController: UIViewController {
                         self.currentCard.reps += 1
                         self.currentCard.cardType = Card.CardType.learning
                         self.cardDataController.setNextRevision(card: self.currentCard, ease: 4)
-                        let _ = self.todaysQueue!.dequeue()
-                    } else if self.currentCard.cardType == .daily {
+                    }
+                    
+                    if self.currentCard == self.dailyQueue?.top() {
+                        // this and below case for when type is changed in table view but viewController's queue still has the reference to the card. In this case a daily card will end up in today's Queue, or a regular card will end up in the daily queue (and won't be able to dequeue).
+                        // Using this way uniformly means every appropriate card would be dequeued, nothing else.
                         let _ = self.dailyQueue!.dequeue()
+                    } else if self.currentCard == self.todaysQueue?.top() {
+                        let _ = self.todaysQueue!.dequeue()
                     }
                     self.getNewCardData(card: card)
             })
