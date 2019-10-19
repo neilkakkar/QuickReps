@@ -14,6 +14,7 @@
 		AD474066233E8F22003F455C /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD474065233E8F22003F455C /* Queue.swift */; };
 		AD474068233E9AF9003F455C /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD474067233E9AF9003F455C /* UserManager.swift */; };
 		AD47406A233F65B5003F455C /* UILabelX.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD474069233F65B5003F455C /* UILabelX.swift */; };
+		AD54219B235B51BB0020442D /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD54219A235B51BB0020442D /* StringExtension.swift */; };
 		ADBBD144233407C4007B9366 /* EditCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBBD143233407C4007B9366 /* EditCardViewController.swift */; };
 		ADBBD14623340855007B9366 /* EditCardStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBBD14523340855007B9366 /* EditCardStackView.swift */; };
 		ADC56C192343D916005D0212 /* UITextViewX.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC56C182343D916005D0212 /* UITextViewX.swift */; };
@@ -61,6 +62,7 @@
 		AD474065233E8F22003F455C /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		AD474067233E9AF9003F455C /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		AD474069233F65B5003F455C /* UILabelX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelX.swift; sourceTree = "<group>"; };
+		AD54219A235B51BB0020442D /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		ADBBD143233407C4007B9366 /* EditCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardViewController.swift; sourceTree = "<group>"; };
 		ADBBD14523340855007B9366 /* EditCardStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardStackView.swift; sourceTree = "<group>"; };
 		ADC56C182343D916005D0212 /* UITextViewX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextViewX.swift; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 				ADE6CF44231C0EF600BC793E /* CardStackView.swift */,
 				ADE9E2AC23410498000AE6F5 /* TableHeaderFooterView.swift */,
 				AD474069233F65B5003F455C /* UILabelX.swift */,
+				AD54219A235B51BB0020442D /* StringExtension.swift */,
 				ADC56C182343D916005D0212 /* UITextViewX.swift */,
 				ADE6CF17231C09F400BC793E /* Main.storyboard */,
 				ADBBD14523340855007B9366 /* EditCardStackView.swift */,
@@ -458,6 +461,7 @@
 				AD474066233E8F22003F455C /* Queue.swift in Sources */,
 				ADE6CF16231C09F400BC793E /* ViewController.swift in Sources */,
 				ADBBD144233407C4007B9366 /* EditCardViewController.swift in Sources */,
+				AD54219B235B51BB0020442D /* StringExtension.swift in Sources */,
 				ADE6CF14231C09F400BC793E /* AppDelegate.swift in Sources */,
 				AD474068233E9AF9003F455C /* UserManager.swift in Sources */,
 				ADE6CF492332C5F100BC793E /* CardTableViewController.swift in Sources */,

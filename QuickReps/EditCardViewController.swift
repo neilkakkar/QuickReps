@@ -18,14 +18,14 @@ class EditCardViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var editCardView: EditCardStackView!
-    @IBOutlet weak var dailyStackView: UIStackView!
-    
+    @IBOutlet weak var otherOptionsView: UIStackView!
+    @IBOutlet weak var dailyReminderSwitch: UISwitch!
+    @IBOutlet weak var dateValueLabel: UILabel!
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        let constraint = NSLayoutConstraint(item: dailyStackView!, attribute: .width, relatedBy: .equal, toItem: editCardView, attribute: .width, multiplier: 1, constant: 0)
-        view.addConstraint(constraint)
+
+        view.addConstraint(editCardView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.7))
         
         editCardView.top.delegate = self
         editCardView.bottom.delegate = self
@@ -35,14 +35,14 @@ class EditCardViewController: UIViewController, UITextViewDelegate {
         if let card = card {
             editCardView.top.text = card.top
             editCardView.bottom.text = card.bottom
-            getDailySwitch().setOn(card.cardType == .daily, animated: false)
-            
+            dailyReminderSwitch.setOn(card.cardType == .daily, animated: false)
         } else {
             editCardView.setPlaceholder()
         }
 
         updateSaveButtonState()
         setButtonColors()
+        setDateLabel()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -87,11 +87,9 @@ class EditCardViewController: UIViewController, UITextViewDelegate {
     
     func updateSaveButtonState() {
         let topText = editCardView.top.text ?? ""
-        let bottomText = editCardView.bottom.text ?? ""
-        
         let topTextIsPlaceholder = editCardView.top.isPlaceholder
-        let bottomTextIsPlaceholder = editCardView.bottom.isPlaceholder
-        saveButton.isEnabled = !(topText.isEmpty || bottomText.isEmpty || topTextIsPlaceholder || bottomTextIsPlaceholder)
+
+        saveButton.isEnabled = !(topText.isEmpty || topTextIsPlaceholder)
     }
     
     //MARK: Actions
@@ -119,7 +117,11 @@ class EditCardViewController: UIViewController, UITextViewDelegate {
         }
         
         let top = editCardView.top.text ?? ""
-        let bottom = editCardView.bottom.text ?? ""
+        
+        var bottom = editCardView.bottom.text ?? ""
+        if editCardView.bottom.isPlaceholder {
+            bottom = ""
+        }
         
         if card != nil {
             card!.top = top
@@ -138,18 +140,34 @@ class EditCardViewController: UIViewController, UITextViewDelegate {
     }
     
     //MARK:  Private
-    private func getDailySwitch() -> UISwitch {
-        return dailyStackView.arrangedSubviews[1] as! UISwitch
-    }
-
     private func isDailyCard() -> Bool {
-        return getDailySwitch().isOn
+        return dailyReminderSwitch.isOn
+    }
+    
+    private func getReadableDate(_ date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+        
+        return dateFormatter.string(from: date)
+    }
+    
+    private func setDateLabel() {
+        if let card = card {
+            if card.cardType == .daily {
+                dateValueLabel.text = "NA"
+            } else {
+                dateValueLabel.text = getReadableDate(card.dueDate)
+            }
+        } else {
+            dateValueLabel.text = "NA"
+        }
     }
     
     private func setButtonColors() {
         navigationController?.navigationBar.tintColor = colorManager.buttonTint
         IQKeyboardManager.shared.toolbarTintColor = colorManager.buttonTint
         
-        self.getDailySwitch().onTintColor = colorManager.buttonTint
+        self.dailyReminderSwitch.onTintColor = colorManager.buttonTint
     }
 }

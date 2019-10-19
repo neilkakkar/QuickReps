@@ -73,6 +73,8 @@ class EditCardStackView: UIStackView {
         
         self.top.translatesAutoresizingMaskIntoConstraints = false
         self.bottom.translatesAutoresizingMaskIntoConstraints = false
+        self.translatesAutoresizingMaskIntoConstraints = false
+        
         
         self.top.textAlignment = .center
         self.bottom.textAlignment = .center

@@ -47,6 +47,7 @@ class CardStackView: UIStackView {
                 self.bottom.alpha = 1
                 self.bottom.backgroundColor = self.colorManager.bottomBackground
                 self.bottom.textColor = self.colorManager.bottomLabelText
+                self.top.showTrueClozeableText()
             }
         }
     }
@@ -106,10 +107,16 @@ class CardStackView: UIStackView {
     
     private func setupCardView() {
         
-        self.top.text = self.cardData.top
+        self.top.setClozeableText(text: self.cardData.top)
+        self.top.showHiddenClozeableText()
         self.bottom.text = self.cardData.bottom
-        
         self.bottom.alpha = 0
+        
+        if self.bottom.text == "" {
+            self.bottom.isHidden = true
+        } else {
+            self.bottom.isHidden = false
+        }
     }
     
     private func setupView() {
