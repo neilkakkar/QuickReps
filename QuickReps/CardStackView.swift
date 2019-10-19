@@ -102,7 +102,6 @@ class CardStackView: UIStackView {
         
         addArrangedSubview(self.top)
         addArrangedSubview(self.bottom)
-        
     }
     
     private func setupCardView() {

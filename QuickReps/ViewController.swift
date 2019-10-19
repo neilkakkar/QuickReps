@@ -19,6 +19,7 @@ class ViewController: UIViewController {
     var todaysQueue: Queue<Card>?
     var dailyQueue: Queue<Card>?
     var currentCard: Card = CardDataController.totalZeroCard
+    var currentCardStartTime = Date()
     var isDailyQueue: Bool = false
     let colorManager = ColorManager.shared
     
@@ -43,6 +44,7 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         cardStackView.resetViewWithNewData(cardData: currentCard)
+        currentCardStartTime = Date()
         super.viewWillAppear(animated)
     }
     
@@ -96,9 +98,9 @@ class ViewController: UIViewController {
                     card.alpha = 0
             },
                 completion: {(finished: Bool) in
-                    if ![Card.CardType.system, Card.CardType.daily].contains(self.currentCard.cardType) {
+                    if [Card.CardType.new, Card.CardType.learning, Card.CardType.revising].contains(self.currentCard.cardType) {
                         self.currentCard.reps += 1
-                        self.cardDataController.setNextRevision(card: self.currentCard, ease: 1)
+                        self.cardDataController.setNextRevision(card: self.currentCard, time: 1)
                         self.currentCard.cardType = Card.CardType.revising
                         self.todaysQueue!.enqueue(item: self.currentCard)
                     }
@@ -120,10 +122,10 @@ class ViewController: UIViewController {
                     card.alpha = 0
             },
                 completion: {(finished: Bool) in
-                    if ![Card.CardType.system, Card.CardType.daily].contains(self.currentCard.cardType) {
+                    if [Card.CardType.new, Card.CardType.learning, Card.CardType.revising].contains(self.currentCard.cardType) {
                         self.currentCard.reps += 1
+                        self.cardDataController.setNextRevision(card: self.currentCard, time: self.currentCardStartTime.timeIntervalSinceNow)
                         self.currentCard.cardType = Card.CardType.learning
-                        self.cardDataController.setNextRevision(card: self.currentCard, ease: 4)
                     }
                     
                     if self.currentCard == self.dailyQueue?.top() {
@@ -194,6 +196,7 @@ class ViewController: UIViewController {
             card.alpha = 1
         }
         self.initialCardCenter = nil
+        currentCardStartTime = Date()
     }
     
     private func setPageTitle() {
@@ -201,6 +204,7 @@ class ViewController: UIViewController {
     }
     
     private func setupQueues() {
+        // when we toggle queues, too.
         if isDailyQueue {
             if dailyQueue!.isEmpty() {
                 dailyQueue = cardDataController.getDailyQueue()
@@ -231,6 +235,7 @@ class ViewController: UIViewController {
                     self.cardStackView.alpha = 1
                 }
         })
+        currentCardStartTime = Date()
     }
     
     private func setButtonColors() {

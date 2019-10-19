@@ -33,6 +33,7 @@ class CardDataController {
         if let savedCards = loadCards() {
             cards = savedCards
         } else {
+            print("Saved cards not found!")
             loadSampleCards()
         }
         
@@ -81,30 +82,17 @@ class CardDataController {
         return nil
     }
     
-    func setNextRevision(card: Card, ease: Int) {
-        if card.cardType == .daily {
+    func setNextRevision(card: Card, time: TimeInterval) {
+        if card.cardType == .daily || card.cardType == .revising {
             return
         }
-
-        if card.cardType == Card.CardType.revising {
-            // normal card revising
-            if ease >= 3 {
-                // success
-                card.cardType = Card.CardType.learning
-            }
-            return
-        }
-
-        if ease < 3 {
-            card.interval = Card.Time.oneDay
-            card.cardType = Card.CardType.revising
-        } else if card.interval.isEqual(to: Card.Time.oneDay) {
-            card.interval = Card.Time.oneDay*6 // 6 days
-        } else {
-            let newInterval = min(Card.Time.oneYear, ceil(card.interval * card.easinessFactor))
-            card.interval = newInterval
-        }
-
+        
+        let ease = getEaseFromTime(time: time)
+        // let current interval = old interval + extra time spent after due date
+        let newInterval = getNewInterval(interval: card.interval + getTimeDelta(dueDate: card.dueDate), ease: ease, easinessFactor: card.easinessFactor)
+        
+        card.interval = fuzzInterval(interval: newInterval)
+        
         let addend = createNewAddend(ease)
         let newEasinessFactor = card.easinessFactor + addend
         card.easinessFactor = newEasinessFactor
@@ -162,6 +150,7 @@ class CardDataController {
     }
     
     func saveCards() {
+        print("Saving cards!")
         let codedCardsData = try! NSKeyedArchiver.archivedData(withRootObject: cards, requiringSecureCoding: false)
         let codedDailyData = try! NSKeyedArchiver.archivedData(withRootObject: dailyCards, requiringSecureCoding: false)
         
@@ -207,8 +196,46 @@ class CardDataController {
         return 0.1 - v1*v2
     }
     
-    private func getNewInterval(card: Card) {
+    private func getNewInterval(interval: TimeInterval, ease: Int, easinessFactor: Double) -> TimeInterval {
+        var newInterval: TimeInterval
+        if ease < 3 {
+            newInterval = max(Card.Time.oneDay, ceil(interval / easinessFactor))
+        } else if interval.isLessThanOrEqualTo(Card.Time.oneDay*3) {
+            newInterval = Card.Time.oneDay*6 // 6 days
+        } else {
+            newInterval = min(Card.Time.oneYear, ceil(interval * easinessFactor))
+        }
+        return newInterval
+    }
+    
+    private func fuzzInterval(interval: TimeInterval) -> TimeInterval {
+        let values = [-Card.Time.oneDay*2, -Card.Time.oneDay, 0, Card.Time.oneDay, Card.Time.oneDay*2]
+        if interval > Card.Time.oneDay*6 {
+            return interval + values.randomElement()!
+        }
+        return interval
+    }
+    
+    private func getEaseFromTime(time: TimeInterval) -> Int {
+        let value = -time
+        if value < 0 {
+            return 1 // default ease for wrong answer
+        }
         
+        if value < 5 {
+            return 5 // answered within 5 seconds, strong recall.
+        } else if value < 20 {
+            return 4
+        }
+        return 3
+    }
+    
+    private func getTimeDelta(dueDate: Date) -> TimeInterval {
+        let val = dueDate.timeIntervalSinceNow
+        if val > 0 {
+            return 0
+        }
+        return fabs(val)
     }
 
     private func loadSampleCards() {

@@ -45,6 +45,10 @@ class CardDataControllerTests: XCTestCase {
         XCTAssert(cardDataController.dailyCards.isEmpty)
     }
     
+    func testCreateNewAddend() {
+        
+    }
+    
     func testTutorialOutput() {
         
         UserManager.shared.setFirstLaunch()
@@ -61,18 +65,20 @@ class CardDataControllerTests: XCTestCase {
         let currentDate = Date()
         let card = Card(top: "a", bottom: "b", dateAdded: currentDate, dueDate: currentDate, interval: Card.Time.oneDay, easinessFactor: 1.4, reps: 12, cardType: .learning)
         
-        cardDataController.setNextRevision(card: card, ease: 4)
+        cardDataController.setNextRevision(card: card, time: -12)
         
         XCTAssert(card.interval == Card.Time.oneDay*6)
         
         // card data controller sets the next interval considering "now"
-        XCTAssert(abs(card.dueDate.timeIntervalSince(Date(timeIntervalSinceNow: card.interval))) < 0.1)
+        XCTAssert(fabs(card.dueDate.timeIntervalSince(Date(timeIntervalSinceNow: card.interval))) < 0.1)
         XCTAssert(card.easinessFactor == 1.4)
         
         card.interval = Card.Time.oneDay*3.1415
-        cardDataController.setNextRevision(card: card, ease: 1)
+        card.dueDate = Date() // to remove the extra reference time
         
-        XCTAssert(card.interval == Card.Time.oneDay)
+        cardDataController.setNextRevision(card: card, time: 1)
+        
+        XCTAssert(card.interval.isLessThanOrEqualTo(ceil(Card.Time.oneDay*3.1415 / card.easinessFactor)*1.1))
         
         // card data controller sets the next interval considering "now"
         XCTAssert(fabs(card.dueDate.timeIntervalSince(Date(timeIntervalSinceNow: card.interval))) < 0.1)
@@ -82,7 +88,7 @@ class CardDataControllerTests: XCTestCase {
         
         card.interval = Card.Time.oneDay*3.1415
         card.cardType = .learning
-        cardDataController.setNextRevision(card: card, ease: 4)
+        cardDataController.setNextRevision(card: card, time: -12)
 
         XCTAssert(fabs(card.interval - ceil(Card.Time.oneDay*3.1415*1.3)) < 0.1)
         
@@ -92,6 +98,11 @@ class CardDataControllerTests: XCTestCase {
         XCTAssert(card.easinessFactor == 1.3)
         
         //BUG: Easiness factor never increases, but goes down with each wrong answer, till it stabilizes at 1.3!
+        
+        card.cardType = .learning
+        cardDataController.setNextRevision(card: card, time: -4)
+
+        XCTAssert(card.easinessFactor > 1.3)
         
     }
 

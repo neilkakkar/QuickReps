@@ -13,7 +13,7 @@ class Card: NSObject, NSCoding {
     
     //MARK: Properties
     var top: String
-    var bottom: String
+    var bottom: String?
     var dateAdded: Date
     var dueDate: Date
     var interval: TimeInterval // in seconds
@@ -39,7 +39,7 @@ class Card: NSObject, NSCoding {
         static let oneDay: TimeInterval = 24*60*60
         static let oneMinute: TimeInterval = 60
         static let oneHour: TimeInterval = 60*60
-        static let oneYear: TimeInterval = 24*60*60*365
+        static let oneYear: TimeInterval = 24*365*60*60
     }
     
     enum CardType: Int {
@@ -63,7 +63,7 @@ class Card: NSObject, NSCoding {
         return card
     }
     
-    init(top: String, bottom: String) {
+    init(top: String, bottom: String?) {
         self.dateAdded = Date()
         self.top = top
         self.bottom = bottom
@@ -75,7 +75,7 @@ class Card: NSObject, NSCoding {
         super.init()
     }
     
-    init(top: String, bottom: String, dateAdded: Date, dueDate: Date, interval: TimeInterval, easinessFactor: Double, reps: Int, cardType: CardType) {
+    init(top: String, bottom: String?, dateAdded: Date, dueDate: Date, interval: TimeInterval, easinessFactor: Double, reps: Int, cardType: CardType) {
         self.top = top
         self.bottom = bottom
         self.dateAdded = dateAdded
@@ -109,10 +109,6 @@ class Card: NSObject, NSCoding {
             os_log("Unable to decode top string", type: .debug)
             return nil
         }
-        guard let bottom = aDecoder.decodeObject(forKey: PropertyKey.bottom) as? String else {
-            os_log("Unable to decode bottom string", type: .debug)
-            return nil
-        }
         guard let dateAdded = aDecoder.decodeObject(forKey: PropertyKey.dateAdded) as? Date else {
             os_log("Unable to decode dateAdded", type: .debug)
             return nil
@@ -126,10 +122,12 @@ class Card: NSObject, NSCoding {
             return nil
         }
         
+        let bottom = aDecoder.decodeObject(forKey: PropertyKey.bottom) as? String
+        
         let interval = aDecoder.decodeDouble(forKey: PropertyKey.interval)
         let easinessFactor = aDecoder.decodeDouble(forKey: PropertyKey.easinessFactor)
         let reps = aDecoder.decodeInteger(forKey: PropertyKey.reps)
-        
+
         self.init(top: top, bottom: bottom, dateAdded: dateAdded, dueDate: dueDate,
                   interval: interval, easinessFactor: easinessFactor, reps: reps, cardType: cardType)
     }
